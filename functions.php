@@ -187,11 +187,11 @@ add_action( 'widgets_init', 'akina_widgets_init' );
  * Enqueue scripts and styles.
  */
 function akina_scripts() {
-	wp_enqueue_style( 'siren', get_stylesheet_uri(), array(), '2.0.0' );
-	wp_enqueue_script( 'jq', get_template_directory_uri() . '/js/jquery.min.js', array(), '2.0.0', true ); 
-	wp_enqueue_script( 'pjax-libs', get_template_directory_uri() . '/js/jquery.pjax.js', array(), '2.0.0', true );
-	wp_enqueue_script( 'input', get_template_directory_uri() . '/js/input.min.js', array(), '2.0.0', true );
-    wp_enqueue_script( 'global', get_template_directory_uri() . '/js/global.min.js', array(), '2.0.0', true );
+	wp_enqueue_style( 'siren', get_stylesheet_uri(), array(), '2.0.1' );
+	wp_enqueue_script( 'jq', get_template_directory_uri() . '/js/jquery.min.js', array(), '2.0.1', true ); 
+	wp_enqueue_script( 'pjax-libs', get_template_directory_uri() . '/js/jquery.pjax.js', array(), '2.0.1', true );
+	wp_enqueue_script( 'input', get_template_directory_uri() . '/js/input.min.js', array(), '2.0.1', true );
+    wp_enqueue_script( 'global', get_template_directory_uri() . '/js/global.min.js', array(), '2.0.1', true );
 	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
 		wp_enqueue_script( 'comment-reply' );
 	}
