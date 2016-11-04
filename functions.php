@@ -263,12 +263,12 @@ require get_template_directory() . '/inc/function-update.php';
 						<div class="comment-arrow">
 							<div class="main shadow">
 								<div class="profile">
-									<a href="<?php comment_author_url(); ?>"><img src="//cn.gravatar.com/avatar/<?php echo esc_attr(md5($comment->comment_author_email)); ?>?s=96" class="gravatar" alt="<?php comment_author(); ?>"></a>
+									<a href="<?php comment_author_url(); ?>"><?php echo get_avatar( $comment->comment_author_email, '80', '', get_comment_author() ); ?></a>
 								</div>
 								<div class="commentinfo">
 									<section class="commeta">
 										<div class="left">
-											<h4 class="author"><a href="<?php comment_author_url(); ?>"><img src="//cn.gravatar.com/avatar/<?php echo esc_attr(md5($comment->comment_author_email)); ?>?s=24" class="gravatarsmall" alt="<?php comment_author(); ?>"><?php comment_author(); ?> <span class="isauthor" title="<?php esc_attr_e('Author', 'akina'); ?>">博主</span></a></h4>
+											<h4 class="author"><a href="<?php comment_author_url(); ?>"><?php echo get_avatar( $comment->comment_author_email, '24', '', get_comment_author() ); ?><?php comment_author(); ?> <span class="isauthor" title="<?php esc_attr_e('Author', 'akina'); ?>">博主</span></a></h4>
 										</div>
 										<?php comment_reply_link(array_merge($args, array('depth' => $depth, 'max_depth' => $args['max_depth']))); ?>
 										<div class="right">

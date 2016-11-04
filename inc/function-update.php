@@ -160,12 +160,12 @@ if(!function_exists('fa_ajax_comment_callback')) {
         <div class="comment-arrow">
           <div class="main shadow">
               <div class="profile">
-                  <a href="<?php comment_author_url(); ?>"><img src="//cn.gravatar.com/avatar/<?php echo esc_attr(md5($comment->comment_author_email)); ?>?s=96" class="gravatar" alt="<?php comment_author(); ?>"></a>
+                  <a href="<?php comment_author_url(); ?>"><?php echo get_avatar( $comment->comment_author_email, '80', '', get_comment_author() ); ?></a>
               </div>
               <div class="commentinfo">
                 <section class="commeta">
                   <div class="left">
-                    <h4 class="author"><a href="<?php comment_author_url(); ?>"><img src="//cn.gravatar.com/avatar/<?php echo esc_attr(md5($comment->comment_author_email)); ?>?s=24" class="gravatarsmall" alt="<?php comment_author(); ?>"><?php comment_author(); ?> <span class="isauthor" title="<?php esc_attr_e('Author', 'akina'); ?>"></span></a></h4>
+                    <h4 class="author"><a href="<?php comment_author_url(); ?>"><?php echo get_avatar( $comment->comment_author_email, '80', '', get_comment_author() ); ?><?php comment_author(); ?> <span class="isauthor" title="<?php esc_attr_e('Author', 'akina'); ?>"></span></a></h4>
                   </div>
                   <div class="right">
                     <div class="info"><time datetime="<?php comment_date('Y-m-d'); ?>"><?php echo poi_time_since(strtotime($comment->comment_date_gmt), true );//comment_date(get_option('date_format')); ?></time></div>
@@ -268,13 +268,9 @@ function headPattern(){ // 我也不知道我写的是什么鬼。
     $t .= the_title( '<h1 class="entry-title">', '</h1>', false);
   }elseif(is_archive()){
     $full_image_url = z_taxonomy_image_url();
-    if(!$full_image_url && is_author()){
-      $full_image_url = akina_option('focus_img');
-    }else{
-      $des = category_description() ? category_description() : ''; // 描述
-      $t .= '<h1 class="cat-title">'.single_cat_title('', false).'</h1>';
-      $t .= ' <span class="cat-des">'.$des.'</span>';
-    }
+    $des = category_description() ? category_description() : ''; // 描述
+    $t .= '<h1 class="cat-title">'.single_cat_title('', false).'</h1>';
+    $t .= ' <span class="cat-des">'.$des.'</span>';
   }elseif(is_search()){
     $full_image_url = akina_option('focus_img');
     $t .= '<h1 class="entry-title search-title"> 关于“ '.get_search_query().' ”的搜索结果</h1>';

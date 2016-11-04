@@ -21,6 +21,7 @@ function z_init() {
 	}
 }
 
+add_action( 'admin_head', 'z_add_style' );
 function z_add_style() {
 	echo '<style type="text/css" media="screen">
 		th.column-thumb {width:60px;}
@@ -231,7 +232,6 @@ function z_change_insert_button_text($safe_text, $text) {
 
 // 列表图片样式
 if ( strpos( $_SERVER['SCRIPT_NAME'], 'edit-tags.php' ) > 0 ) {
-	add_action( 'admin_head', 'z_add_style' );
 	add_action('quick_edit_custom_box', 'z_quick_edit_custom_box', 10, 3);
 	add_filter("attribute_escape", "z_change_insert_button_text", 10, 2);
 }
