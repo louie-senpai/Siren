@@ -13,9 +13,9 @@
 
 ?>
 
-	<?php if(comments_open() != false): ?>
+	<?php if(comments_open()): ?>
 
-	<section class="comments">
+	<section id="comments" class="comments">
 
 		<div class="commentwrap comments-hidden">
 			<div class="notification"><i class="iconfont">&#xe610;</i><?php esc_html_e('查看评论', 'akina'); ?> -
