@@ -1,6 +1,6 @@
 @charset "utf-8";
 /*
-Theme Name: Siren
+Theme Name: Siren Git
 Theme URI: http://i94.me
 Author: Louie
 Author URI: http://i94.me
@@ -1205,7 +1205,7 @@ text-align:right;
 
 .post-more i {
 font-size: 25px;
-color: #A0DAD0;
+color: #666;
 }
 
 .post-more i:hover {
@@ -3033,9 +3033,6 @@ z-index:-1;
     .focusinfo,#video-container{
         display: none;
     }
-    .headertop{
-        padding-top: 50px;
-    }
 }
 
 .blank {
@@ -4196,7 +4193,7 @@ max-width: 1245px;
     width: 100%;
     height: 100%;
     position: fixed;
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: rgba(0, 0, 0, 0.4);
     z-index: 99;
 }
 #main-container.open {
@@ -4240,14 +4237,14 @@ height: 50px;
 position: absolute;
 z-index: 99999;
 display:block;
-background: #fff;
+background: none;
 }
 .openNav .iconflat:hover {
 cursor: pointer;
 }
 
 .iconflat {
-background: #E67474;
+background: none;
 width: 50px;
 height: 50px;
 float: left;
@@ -4256,26 +4253,26 @@ float: left;
 transition-duration: 0.2s;
 position: absolute;
 width: 30px;
-height: 2px;
-background-color: white;
+height: 3px;
+background-color: #333;
 top: 24px;
 left: 10px;
 }
 .openNav .icon:before,
 .openNav .icon:after {
 transition-duration: 0.5s;
-background-color: white;
+background-color: #333;
 position: absolute;
 content: "";
 width: 30px;
-height: 2px;
+height: 3px;
 left: 0px;
 }
 .openNav .icon:before {
-top: -7px;
+top: -8px;
 }
 .openNav .icon:after {
-top: 7px;
+top: 8px;
 }
 .openNav.open .icon {
 background-color: transparent;
@@ -4287,10 +4284,12 @@ top: 0;
 .openNav.open .icon:before {
 transform: rotate(-45deg);
 -webkit-transform: rotate(-45deg);
+background: #FFFFFF;
 }
 .openNav.open .icon:after {
 transform: rotate(45deg);
 -webkit-transform: rotate(45deg);
+background: #FFFFFF;
 }
 #mo-nav {
 background-color: #FFFFFF;

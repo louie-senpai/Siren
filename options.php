@@ -121,7 +121,7 @@ function optionsframework_options() {
 			'A0DAD0' => 100,
             '93D7F1' => 1,
             'FDEE83' => 2,
-            'FFBE5B' => 3,
+            'FE9600' => 3,
             'FF7D7D' => 4,
             'FFBCCF' => 5,
             '2B394E' => 6,
@@ -276,7 +276,14 @@ function optionsframework_options() {
 		'desc' => __('Sitemap生成的地图链接', 'options_framework_theme'),
 		'id' => 'site_map_link',
 		'std' => '',
-		'type' => 'text');		
+		'type' => 'text');
+
+	$options[] = array(
+		'name' => __('自定义CSS样式', 'options_framework_theme'),
+		'desc' => __('直接填写CSS代码，不需要加style标签', 'options_framework_theme'),
+		'id' => 'site_custom_style',
+		'std' => '',
+		'type' => 'textarea');		
 
 		
 	//第一屏

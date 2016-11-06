@@ -49,7 +49,7 @@ if (akina_option('akina_meta') == true) {
 <?php wp_head(); ?>
 <script type="text/javascript">
 if (!!window.ActiveXObject || "ActiveXObject" in window) { //is IE?
-  alert('请抛弃万恶的IE浏览器吧，不然你会失去本宝宝的！');
+  alert('请抛弃万恶的IE浏览器吧。');
 }
 </script>
 </head>
