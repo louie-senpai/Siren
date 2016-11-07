@@ -6,7 +6,7 @@ Siren 是基于 Akina 主题修改而来的，感谢[Fuzzz](http://www.akina.pw/
 
 ## 演示地址
 
-[Acool博客](https://www.coolest.cc/)  
+[Acool博客](http://iacool.com/)  
 
 ## 添加了一些东西
 Pjax(ajax)局部刷新。<br>
