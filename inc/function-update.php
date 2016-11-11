@@ -504,3 +504,30 @@ function no_category_base_request($query_vars) {
   }
   return $query_vars;
 }
+
+/**
+ * Author URL
+*/
+// Replace the user name using the nickname, query by user ID
+add_filter( 'request', 'siren_request' );
+function siren_request( $query_vars ){
+    if ( array_key_exists( 'author_name', $query_vars ) ) {
+        global $wpdb;
+        $author_id = $wpdb->get_var( $wpdb->prepare( "SELECT user_id FROM {$wpdb->usermeta} WHERE meta_key='nickname' AND meta_value = %s", $query_vars['author_name'] ) );
+        if ( $author_id ) {
+            $query_vars['author'] = $author_id;
+            unset( $query_vars['author_name'] );    
+        }
+    }
+    return $query_vars;
+}
+ 
+// Replace a user name in a link with a nickname
+add_filter( 'author_link', 'siren_author_link', 10, 3 );
+function siren_author_link( $link, $author_id, $author_nicename ){
+    $author_nickname = get_user_meta( $author_id, 'nickname', true );
+    if ( $author_nickname ) {
+        $link = str_replace( $author_nicename, $author_nickname, $link );
+    }
+    return $link;
+}
