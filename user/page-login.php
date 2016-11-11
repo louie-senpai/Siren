@@ -18,7 +18,7 @@ get_header();
 					<input type="hidden" name="redirect_to" value="<?php echo $_SERVER['REQUEST_URI']; ?>" />
 					<input class="button login-button" name="submit" type="submit" value="登 入">
 				</form>
-				<div class="ex-new-account"><a href="<?php echo akina_option('exregister_url') ? akina_option('exregister_url') : home_url(); ?>">Create an account？</a></div>
+				<div class="ex-new-account"><a href="<?php echo akina_option('exregister_url') ? akina_option('exregister_url') : bloginfo('url'); ?>" target="_top">Create an account？</a></div>
 			</div>
 		<?php }else{ echo Exuser_center(); } ?>
 		</main><!-- #main -->

@@ -7,7 +7,7 @@
  * @package Akina
  */
  
-
+define( 'SIREN_VERSION', '2.0.3' );
 
 if ( !function_exists( 'akina_setup' ) ) :
 /**
@@ -45,7 +45,7 @@ function akina_setup() {
 
 	// This theme uses wp_nav_menu() in one location.
 	register_nav_menus( array(
-		'primary' => esc_html__( 'Primary', 'akina' ),
+		'primary' => esc_html__( '导航菜单', 'akina' ),
 	) );
 
 	/*
@@ -187,22 +187,22 @@ add_action( 'widgets_init', 'akina_widgets_init' );
  * Enqueue scripts and styles.
  */
 function akina_scripts() {
-	wp_enqueue_style( 'siren', get_stylesheet_uri(), array(), '2.0.2' );
-	wp_enqueue_script( 'jq', get_template_directory_uri() . '/js/jquery.min.js', array(), '2.0.2', true ); 
-	wp_enqueue_script( 'pjax-libs', get_template_directory_uri() . '/js/jquery.pjax.js', array(), '2.0.2', true );
-	wp_enqueue_script( 'input', get_template_directory_uri() . '/js/input.min.js', array(), '2.0.2', true );
-    wp_enqueue_script( 'global', get_template_directory_uri() . '/js/global.min.js', array(), '2.0.2', true );
+	wp_enqueue_style( 'siren', get_stylesheet_uri(), array(), SIREN_VERSION );
+	wp_enqueue_script( 'jq', get_template_directory_uri() . '/js/jquery.min.js', array(), SIREN_VERSION, true ); 
+	wp_enqueue_script( 'pjax-libs', get_template_directory_uri() . '/js/jquery.pjax.js', array(), SIREN_VERSION, true );
+	wp_enqueue_script( 'input', get_template_directory_uri() . '/js/input.min.js', array(), SIREN_VERSION, true );
+    wp_enqueue_script( 'global', get_template_directory_uri() . '/js/global.min.js', array(), SIREN_VERSION, true );
 	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
 		wp_enqueue_script( 'comment-reply' );
 	}
 
 	// 20161015 @Louie
-	$amv = akina_option('focus_amv') ? array("amv_url" => akina_option('amv_url'),"amv_name" => akina_option('amv_title')) : 0;
+	$amv = akina_option('focus_amv') ? array("amv_url" => akina_option('amv_url'), "amv_name" => akina_option('amv_title')) : 0;
 	$video_live = akina_option('focus_mvlive') ? 1 : 0;
 	$auto_height = akina_option('focus_height') ? 0 : 1;
 	$code_lamp = akina_option('open_prism_codelamp') ? 1 : 0;
 	if(wp_is_mobile()){$auto_height = 0;}//拦截移动端
-	wp_localize_script( 'global', 'Poi' ,array(
+	wp_localize_script( 'global', 'Poi' , array(
 		"pjax" => akina_option('poi_pjax'),
 		"video" => $amv,
 		"videolive" => $video_live,
@@ -210,11 +210,11 @@ function akina_scripts() {
 		"codelamp" => $code_lamp
 	));
 
-	//ajax cemments
+	//ajax comments
 	wp_localize_script( 'global', 'ajaxcomment', array(
         'ajax_url'   => admin_url('admin-ajax.php'),
         'order' => get_option('comment_order'),
-        'formpostion' => 'bottom', //默认为bottom，如果你的表单在顶部则设置为top。
+        'formpostion' => 'bottom' //默认为bottom，如果你的表单在顶部则设置为top。
 	));
 }
 add_action( 'wp_enqueue_scripts', 'akina_scripts' );
@@ -222,7 +222,7 @@ add_action( 'wp_enqueue_scripts', 'akina_scripts' );
 /**
  * load .php.
  */
-require_once('inc/fn.php');
+require get_template_directory() .'/inc/fn.php';
 
 /**
  * Custom template tags for this theme.
@@ -248,6 +248,7 @@ require get_template_directory() . '/inc/jetpack.php';
  * function update
  */
 require get_template_directory() . '/inc/function-update.php';
+require get_template_directory() . '/inc/categories-images.php';
 
 
 /*-----------------------------------------------------------------------------------*/

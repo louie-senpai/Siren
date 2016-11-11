@@ -38,7 +38,16 @@
 			<?php } ?>
 		<?php if (akina_option('wangyiyun')){ ?>
 				<li><a href="<?php echo akina_option('wangyiyun', ''); ?>" target="_blank" class="social-wangyiyun" title="CloudMusic"><img src="<?php bloginfo('template_url'); ?>/images/sns/wangyiyun.png"/></a></li>
-			<?php } ?>		
+			<?php } ?>
+		<?php if (akina_option('twitter')){ ?>
+				<li><a href="<?php echo akina_option('twitter', ''); ?>" target="_blank" class="social-wangyiyun" title="Twitter"><img src="<?php bloginfo('template_url'); ?>/images/sns/twitter.png"/></a></li>
+			<?php } ?>	
+		<?php if (akina_option('facebook')){ ?>
+				<li><a href="<?php echo akina_option('facebook', ''); ?>" target="_blank" class="social-wangyiyun" title="Facebook"><img src="<?php bloginfo('template_url'); ?>/images/sns/facebook.png"/></a></li>
+			<?php } ?>	
+		<?php if (akina_option('googleplus')){ ?>
+				<li><a href="<?php echo akina_option('googleplus', ''); ?>" target="_blank" class="social-wangyiyun" title="Google+"><img src="<?php bloginfo('template_url'); ?>/images/sns/googleplus.png"/></a></li>
+			<?php } ?>			
 	  </div>		 
 	</div>
 	<?php } ?>

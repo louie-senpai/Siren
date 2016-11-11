@@ -5,11 +5,11 @@ get_header();
 ?>
 <div class="author_info">
 	<div class="avatar">
-		<?php echo get_avatar( get_the_author_meta('user_email'), '70' ); ?>
+		<img src="<?php echo get_avatar_profile_url(); ?>" itemprop="image" alt="<?php the_author(); ?>" height="70" width="70">
 	</div>
 	<div class="author-center">
 		<h3><?php the_author() ?></h3>
-		<div class="description"><?php echo get_the_author_meta( 'description' ) ? get_the_author_meta( 'description' ) :akina_option('admin_des', 'Carpe Diem and Do what I like'); ?></div>
+		<div class="description"><?php echo get_the_author_meta( 'description' ) ? get_the_author_meta( 'description' ) : akina_option('admin_des', 'Carpe Diem and Do what I like'); ?></div>
 	</div>
 </div>
 <style type="text/css">
@@ -23,7 +23,7 @@ get_header();
 	}
 	.author_info .avatar{
 		float: left;
-    	margin-right: 8px;
+    	margin-right: 12px;
     	margin-left: 8px;
 	}
 	.author_info .avatar img{
@@ -73,7 +73,7 @@ get_header();
 
 		</main><!-- #main -->
 		<?php if ( akina_option('pagenav_style') == 'ajax') { ?>
-		<div id="pagination"><?php next_posts_link(__('加载更多')); ?></div>
+		<div id="pagination"><?php next_posts_link(__('Previous')); ?></div>
 		<?php }else{ ?>
 		<nav class="navigator">
         <?php previous_posts_link('<i class="iconfont">&#xe611;</i>') ?><?php next_posts_link('<i class="iconfont">&#xe60f;</i>') ?>

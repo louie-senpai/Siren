@@ -30,31 +30,19 @@ get_header(); ?>
 
 			<?php
 			/* Start the Loop */
-			while ( have_posts() ) : the_post(); 
-			?>
-			
-			<?php 
-					/*
-					* 如果选择分类ID  那么这个页面将输出works样式
-					*/
-				$cat_array = akina_option('works_multicheck');
-				$huluwa = array();
-				foreach ($cat_array as $key=>$works_multicheck){
-					if ($works_multicheck==1) $huluwa[]=$key;
-				} 				
-				if ( is_category($huluwa) ){
-					include(TEMPLATEPATH . '/tpl/works-list.php');
+			while ( have_posts() ) : the_post();  
+				/*
+				* 图片展示分类
+				*/				
+				if ( akina_option('image_category') && is_category(explode(',',akina_option('image_category'))) ){
+					get_template_part( 'tpl/content', 'category' );
 				} else {
-					/*
-					* Include the Post-Format-specific template for the content.
-					* If you want to override this in a child theme, then include a file
-					* called content-___.php (where ___ is the Post Format name) and that will be used instead.
-					*/
 					get_template_part( 'tpl/content', get_post_format() );
 				}
 				
-				endwhile; ?>
-				<div class="clearer"></div>
+			endwhile; 
+			?>
+			<div class="clearer"></div>
 
 		<?php else :
 
@@ -64,7 +52,7 @@ get_header(); ?>
 
 		</main><!-- #main -->
 		<?php if ( akina_option('pagenav_style') == 'ajax') { ?>
-		<div id="pagination"><?php next_posts_link(__('加载更多')); ?></div>
+		<div id="pagination" <?php if(akina_option('image_category') && is_category(explode(',',akina_option('image_category')))) echo 'class="pagination-archive"'; ?>><?php next_posts_link(__('Previous')); ?></div>
 		<?php }else{ ?>
 		<nav class="navigator">
         <?php previous_posts_link('<i class="iconfont">&#xe611;</i>') ?><?php next_posts_link('<i class="iconfont">&#xe60f;</i>') ?>

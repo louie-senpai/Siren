@@ -3,7 +3,6 @@
  * Custom function
 */
 
-require get_template_directory() . '/inc/categories-images.php';
 // 允许分类、标签描述添加html代码
 remove_filter('pre_term_description', 'wp_filter_kses');
 remove_filter('term_description', 'wp_kses_data');
@@ -23,6 +22,16 @@ function bgvideo(){
   return $html;
 }
 
+// 使用本地图片作为头像，防止外源抽风问题
+function get_avatar_profile_url(){ 
+  if(akina_option('focus_logo')){
+    $avatar = akina_option('focus_logo');
+  }else{
+    $avatar = get_avatar_url(get_the_author_meta( 'ID' ));
+  }
+  return $avatar;
+}
+
 
 // 获取每日必应图片
 function bingimage(){
@@ -38,17 +47,21 @@ function bingimage(){
 // 微博时间样式
 // poi_time_since(strtotime($post->post_date_gmt));
 // poi_time_since(strtotime($comment->comment_date_gmt), true );
-function poi_time_since( $older_date, $comment_date = false ) {
+function poi_time_since( $older_date, $comment_date = false, $text = false ) {
   $chunks = array(
-    array( 24 * 60 * 60, __( ' 天前', MUTHEME_NAME ) ),
-    array( 60 * 60, __( ' 小时前', MUTHEME_NAME ) ),
-    array( 60, __( ' 分钟前', MUTHEME_NAME ) ),
-    array( 1, __( ' 秒前', MUTHEME_NAME ) )
+    array( 24 * 60 * 60, __( ' 天前', 'akina' ) ),
+    array( 60 * 60, __( ' 小时前', 'akina' ) ),
+    array( 60, __( ' 分钟前', 'akina' ) ),
+    array( 1, __( ' 秒前', 'akina' ) )
   );
 
   $newer_date = time();
   $since = abs( $newer_date - $older_date );
-  $output = '发布于 ';
+  if($text){
+    $output = '';
+  }else{
+    $output = '发布于 ';
+  }
 
   if ( $since < 30 * 24 * 60 * 60 ) {
     for ( $i = 0, $j = count( $chunks ); $i < $j; $i ++ ) {
@@ -247,8 +260,8 @@ function login_ok(){
   <p id="login-showtime"></p>
   <p class="ex-logout">
     <a href="<?php echo home_url(); ?>" title="首页">首页</a>
-    <?php if(current_user_can('level_10')){  ?><a href="<?php bloginfo( 'url' ); ?>/wp-admin/" title="后台">后台</a> <?php } ?>
-    <a href="<?php echo wp_logout_url(home_url()); ?>" title="登出">登出？</a>
+    <?php if(current_user_can('level_10')){  ?><a href="<?php bloginfo( 'url' ); ?>/wp-admin/" title="后台" target="_top">后台</a> <?php } ?>
+    <a href="<?php echo wp_logout_url(home_url()); ?>" title="登出" target="_top">登出？</a>
   </p>
 <?php 
 }
@@ -256,13 +269,17 @@ function login_ok(){
 
 // 文章装饰图
 function headPattern(){ // 我也不知道我写的是什么鬼。
-  $t; // 标题
-  $full_image_url = wp_get_attachment_image_src( get_post_thumbnail_id(get_the_ID()), 'full');
+  $t = ''; // 标题
+  $full_image_url = wp_get_attachment_image_src(get_post_thumbnail_id(get_the_ID()), 'full');
   if(is_single()){
     $full_image_url = $full_image_url[0];
+    if (have_posts()) : while (have_posts()) : the_post();
+    $center = 'single-center';
+    $header = 'single-header';
+    $ava = akina_option('focus_logo', '') ? akina_option('focus_logo', '') : get_avatar_url(get_the_author_meta('user_email'));
     $t .= the_title( '<h1 class="entry-title">', '</h1>', false);
-    $t .= '<p class="entry-census">'. poi_time_since(get_post_time('U', true)) .'&nbsp;&nbsp;'. get_post_views(get_the_ID()) .' 次浏览</p>';
-    $t .= '<hr/>';
+    $t .= '<p class="entry-census"><span><a href="'. get_author_posts_url(get_the_author_meta('ID')) .'"><img src="'. $ava .'"></a></span><span><a href="'. get_author_posts_url(get_the_author_meta('ID')) .'">'. get_the_author() .'</a></span><span class="bull">·</span>'. poi_time_since(get_post_time('U', true),false,true) .'<span class="bull">·</span>'. get_post_views(get_the_ID()) .' 次阅读</p>';
+    endwhile; endif;
   }elseif(is_page()){
     $full_image_url = $full_image_url[0];
     $t .= the_title( '<h1 class="entry-title">', '</h1>', false);
@@ -277,14 +294,55 @@ function headPattern(){ // 我也不知道我写的是什么鬼。
   }
   if(akina_option('patternimg')) $full_image_url = false;
   if(!is_home() && $full_image_url) : ?>
-  <div class="pattern-center">
+  <div class="pattern-center <?php if(is_single()){echo $center;} ?>">
     <div class="pattern-attachment-img" style="background-image: url(<?php echo $full_image_url; ?>)"> </div>
-    <header class="pattern-header"><?php echo $t; ?></header>
+    <header class="pattern-header <?php if(is_single()){echo $header;} ?>"><?php echo $t; ?></header>
   </div>
   <?php else :
     echo '<div class="blank"></div>';
   endif;
   
+}
+
+// 导航栏用户菜单
+function header_user_menu(){
+  global $current_user;get_currentuserinfo(); 
+  if(is_user_logged_in()){
+    $ava = akina_option('focus_logo', '') ? akina_option('focus_logo', '') : get_avatar_url( $current_user->user_email );
+    ?>
+    <div class="header-user-avatar">
+      <img src="<?php echo $ava ?>" width="30" height="30">
+      <div class="header-user-menu">
+        <div class="herder-user-name">Signed in as 
+          <div class="herder-user-name-u"><?php echo $current_user->display_name; ?></div>
+        </div>
+        <div class="user-menu-option">
+          <?php if (current_user_can('level_10')) : ?>
+            <a href="<?php echo bloginfo( 'url' );?>/wp-admin/" target="_top">管理中心</a>
+            <a href="<?php echo bloginfo( 'url' );?>/wp-admin/post-new.php" target="_top">撰写文章</a>
+          <?php endif; ?>
+          <a href="<?php echo bloginfo( 'url' );?>/wp-admin/profile.php" target="_top">个人资料</a>
+          <a href="<?php echo wp_logout_url(home_url()); ?>" target="_top">退出登录</a>
+        </div>
+      </div>
+    </div>
+  <?php
+  }else{ 
+    $ava = get_template_directory_uri().'/images/none.png';
+    $login_url = akina_option('exlogin_url') ? akina_option('exlogin_url') : bloginfo( 'url' ).'/wp-login.php';
+  ?>
+  <div class="header-user-avatar">
+    <a href="<?php echo $login_url; ?>">
+      <img src="<?php echo $ava ?>" width="30" height="30">
+    </a>
+    <div class="header-user-menu">
+      <div class="herder-user-name no-logged">Whether to log in now ?
+        <a href="<?php echo $login_url; ?>">Sign in</a>
+      </div>
+    </div>
+  </div>
+  <?php 
+  }
 }
 
 // 获取相邻文章缩略图
@@ -299,7 +357,7 @@ function get_prev_thumbnail_url() {
     preg_match_all('/<img.*?(?: |\\t|\\r|\\n)?src=[\'"]?(.+?)[\'"]?(?:(?: |\\t|\\r|\\n)+.*?)?>/sim', $content, $strResult, PREG_PATTERN_ORDER); 
     $n = count($strResult[1]); 
     if($n > 0){ 
-    return $strResult[1][0];  
+      return $strResult[1][0];  
     }else{
       return akina_option('focus_img');
     } 

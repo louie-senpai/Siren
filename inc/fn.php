@@ -9,17 +9,17 @@ if ( akina_option('shownav') ) { ?>
 <?php // theme-skin
 if ( akina_option('theme_skin') ) { ?>
 /* Site Color */
-.post-more i:hover , .author-profile i , .sub-text , .we-info a , span.sitename , #pagination a:hover , .loader .loading-two{ color: #<?php echo akina_option('theme_skin'); ?> }
-.feature i , .feature-title span , .download , .navigator i:hover , .links ul li:before , .ar-time i , span.ar-circle , .object , #progress , ::-webkit-scrollbar-thumb , .loader .loading-one:before { background: #<?php echo akina_option('theme_skin'); ?> }
-.download , .navigator i:hover , .link-title , .links ul li:hover ,#pagination a:hover , .loader .loading-one { border-color: #<?php echo akina_option('theme_skin'); ?> }
-.entry-content a:hover , .site-info a:hover , .comment h4 a:hover , .site-top ul li a:hover , .entry-title a:hover , #archives-temp h3 , span.page-numbers.current , .sorry li a:hover , .site-title a:hover , i.iconfont.js-toggle-search.iconsearch:hover{ color: #<?php echo akina_option('theme_skin'); ?> }
-.loader .loading-one:before { box-shadow: 10px 0px 15px 0px #<?php echo akina_option('theme_skin'); ?> }
+.author-profile i , .post-like a , .post-share .show-share , .sub-text , .we-info a , span.sitename , .post-more i:hover , #pagination a:hover{ color: <?php echo akina_option('theme_skin'); ?> }
+.feature i , .feature-title span , .download , .navigator i:hover , .links ul li:before , .ar-time i , span.ar-circle , .object , .comment .comment-reply-link { background: <?php echo akina_option('theme_skin'); ?> }
+::-webkit-scrollbar-thumb { background: <?php echo akina_option('theme_skin'); ?> }
+.download , .navigator i:hover , .link-title , .links ul li:hover , #pagination a:hover { border-color: <?php echo akina_option('theme_skin'); ?> }
+.entry-content a:hover , .site-info a:hover , .comment h4 a , #comments-navi a.prev , #comments-navi a.next , .comment h4 a:hover , .site-top ul li a:hover , .entry-title a:hover , #archives-temp h3 , span.page-numbers.current , .sorry li a:hover , .site-title a:hover , i.iconfont.js-toggle-search.iconsearch:hover{ color: <?php echo akina_option('theme_skin'); ?> }
 <?php } // theme-skin ?>
-<?php // custom style
+<?php // Custom style
 if ( akina_option('site_custom_style') ) {
   echo akina_option('site_custom_style');
 } 
-// custom style end ?>
+// Custom style end ?>
 <?php // liststyle
 if ( akina_option('list_type') == 'square') { ?>
 .feature img{border-radius: 0px; !important;}

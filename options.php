@@ -110,41 +110,18 @@ function optionsframework_options() {
 	$options[] = array(
 		'name' => __('基本设置', 'options_framework_theme'),
 		'type' => 'heading');
-		
-		$options[] = array(
-		'name' => __("主题风格", 'akina'),
-		'desc' => __("点击选择你喜欢的颜色，保存后前端展示会有所改变。", 'haoui'),
-		'id' => "theme_skin",
-		'std' => "A0DAD0",
-		'type' => "colorradio",
-		'options' => array(
-			'A0DAD0' => 100,
-            '93D7F1' => 1,
-            'FDEE83' => 2,
-            'FE9600' => 3,
-            'FF7D7D' => 4,
-            'FFBCCF' => 5,
-            '2B394E' => 6,
-            '45B6F7' => 7,
-            'FF5E52' => 8,
-            '2CDB87' => 9,
-            '00D6AC' => 10,
-            '16C0F8' => 11,
-            'EA84FF' => 12,
-            'FDAC5F' => 13,
-            'FD77B2' => 14,
-            '76BDFF' => 15,
-            'C38CFF' => 16,
-            'FF926F' => 17,
-            '8AC78F' => 18,
-            'C7C183' => 19,
-            '69D2E7' => 20,
-		)
-	);
+	
+	$options[] = array(
+        'name' => __("主题风格", 'akina'),
+        'id' => 'theme_skin',
+        'std' => "#FE9600",
+        'desc' => __('自定义主题颜色', ''),
+        'type' => "color"
+    );
 		
 	$options[] = array(
 		'name' => __('logo', 'options_framework_theme'),
-		'desc' => __('高度尺寸50px。', 'options_framework_theme'),
+		'desc' => __('最佳高度尺寸40px。', 'options_framework_theme'),
 		'id' => 'akina_logo',
 		'type' => 'upload');	
 	
@@ -224,16 +201,6 @@ function optionsframework_options() {
 		));	
 		
 	$options[] = array(
-		'name' => __('网页加载动画', 'akina'),
-		'id' => 'preloader',
-		'std' => "no",
-		'type' => "radio",
-		'options' => array(
-			'yes' => __('开启', ''),
-			'no' => __('关闭', '')
-		));	
-		
-	$options[] = array(
 		'name' => __('分页模式', 'akina'),
 		'id' => 'pagenav_style',
 		'std' => "ajax",
@@ -280,7 +247,7 @@ function optionsframework_options() {
 
 	$options[] = array(
 		'name' => __('自定义CSS样式', 'options_framework_theme'),
-		'desc' => __('直接填写CSS代码，不需要加style标签', 'options_framework_theme'),
+		'desc' => __('直接填写CSS，不需要写style标签', 'options_framework_theme'),
 		'id' => 'site_custom_style',
 		'std' => '',
 		'type' => 'textarea');		
@@ -320,7 +287,7 @@ function optionsframework_options() {
 		
 	 $options[] = array(
 		'name' => __('个人头像', 'options_framework_theme'),
-		'desc' => __('高度尺寸50px。', 'options_framework_theme'),
+		'desc' => __('最佳高度尺寸130px。', 'options_framework_theme'),
 		'id' => 'focus_logo',
 		'type' => 'upload');
 
@@ -418,15 +385,15 @@ function optionsframework_options() {
 		'type' => 'text');
 		
 	$options[] = array(
-		'name' => __('腾讯qq', 'options_framework_theme'),
-		'desc' => __('qq号码', 'options_framework_theme'),
+		'name' => __('腾讯QQ', 'options_framework_theme'),
+		'desc' => __('QQ号码', 'options_framework_theme'),
 		'id' => 'qq',
 		'std' => '',
 		'type' => 'text');
 		
 	$options[] = array(
-		'name' => __('qq空间', 'options_framework_theme'),
-		'desc' => __('qq空间地址', 'options_framework_theme'),
+		'name' => __('QQ空间', 'options_framework_theme'),
+		'desc' => __('QQ空间地址', 'options_framework_theme'),
 		'id' => 'qzone',
 		'std' => '',
 		'type' => 'text');	
@@ -439,30 +406,51 @@ function optionsframework_options() {
 		'type' => 'text');
 
 	$options[] = array(
-		'name' => __('lofter', 'options_framework_theme'),
+		'name' => __('Lofter', 'options_framework_theme'),
 		'desc' => __('lofter地址', 'options_framework_theme'),
 		'id' => 'lofter',
 		'std' => '',
 		'type' => 'text');
 
 	$options[] = array(
-		'name' => __('bilibili', 'options_framework_theme'),
-		'desc' => __('bilibili地址', 'options_framework_theme'),
+		'name' => __('BiliBili', 'options_framework_theme'),
+		'desc' => __('B站地址', 'options_framework_theme'),
 		'id' => 'bili',
 		'std' => '',
 		'type' => 'text');
 
 	$options[] = array(
-		'name' => __('youku', 'options_framework_theme'),
-		'desc' => __('youku地址', 'options_framework_theme'),
+		'name' => __('优酷视频', 'options_framework_theme'),
+		'desc' => __('优酷地址', 'options_framework_theme'),
 		'id' => 'youku',
 		'std' => '',
 		'type' => 'text');
 
 	$options[] = array(
 		'name' => __('网易云音乐', 'options_framework_theme'),
-		'desc' => __('网易云音乐个人主页地址', 'options_framework_theme'),
+		'desc' => __('网易云音乐地址', 'options_framework_theme'),
 		'id' => 'wangyiyun',
+		'std' => '',
+		'type' => 'text');
+
+	$options[] = array(
+		'name' => __('Twitter', 'options_framework_theme'),
+		'desc' => __('推特地址', 'options_framework_theme'),
+		'id' => 'twitter',
+		'std' => '',
+		'type' => 'text');
+
+	$options[] = array(
+		'name' => __('Facebook', 'options_framework_theme'),
+		'desc' => __('脸书地址', 'options_framework_theme'),
+		'id' => 'facebook',
+		'std' => '',
+		'type' => 'text');
+
+	$options[] = array(
+		'name' => __('Google+', 'options_framework_theme'),
+		'desc' => __('G+地址', 'options_framework_theme'),
+		'id' => 'googleplus',
 		'std' => '',
 		'type' => 'text');
 
@@ -558,7 +546,7 @@ function optionsframework_options() {
 
 	$options[] = array(
 		'name' => __('开启PJAX局部刷新', 'options_framework_theme'),
-		'desc' => __('实验功能，支持全站播放音乐', 'options_framework_theme'),
+		'desc' => __('原理与Ajax相同', 'options_framework_theme'),
 		'id' => 'poi_pjax',
 		'std' => '0',
 		'type' => 'checkbox');
@@ -585,11 +573,11 @@ function optionsframework_options() {
 		'type' => 'text');	
 		
 	$options[] = array(
-		'name' => __('作品页面', 'options_framework_theme'),
-		'desc' => __('选择一个或多个分类作为作品页面', 'options_framework_theme'),
-		'id' => 'works_multicheck',
-		'type' => 'multicheck',
-		'options' => $options_categories);
+		'name' => __('图片展示分类', 'options_framework_theme'),
+		'desc' => __('填写分类ID，多个用英文“ , ”分开', 'options_framework_theme'),
+		'id' => 'image_category',
+		'std' => '',
+		'type' => 'text');
 
 	$options[] = array(
 		'name' => __('开启多说插件支持', 'options_framework_theme'),

@@ -42,14 +42,14 @@ if (akina_option('akina_meta') == true) {
 		$description = akina_option('akina_meta_description');
 	};
 ?>
-<meta name="keywords" content="<?php echo $keywords; ?>" />
 <meta name="description" content="<?php echo $description; ?>" />
+<meta name="keywords" content="<?php echo $keywords; ?>" />
 <?php } ?>
 <link rel="shortcut icon" href="<?php bloginfo('template_url'); ?>/images/favicon.ico"/> 
 <?php wp_head(); ?>
 <script type="text/javascript">
 if (!!window.ActiveXObject || "ActiveXObject" in window) { //is IE?
-  alert('请抛弃万恶的IE浏览器吧。');
+  alert('请抛弃万恶的IE系列浏览器吧。');
 }
 </script>
 </head>
@@ -83,6 +83,7 @@ if (!!window.ActiveXObject || "ActiveXObject" in window) { //is IE?
           <?php endif ;?>	
         <!-- logo end -->
 		</div><!-- .site-branding -->
+		<?php header_user_menu() ?><!-- User menu -->
 		<?php if ( akina_option('top_search') ) { ?>
 		<div class="searchbox">
 			<i class="iconfont js-toggle-search iconsearch">&#xe603;</i>

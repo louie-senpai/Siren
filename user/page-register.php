@@ -30,26 +30,29 @@ if( !empty($_POST['register_reg']) ) {
 	}
 
 	// Check the password
-	if(strlen($_POST['user_pass']) < 6)
+	if(strlen($_POST['user_pass']) < 6){
 	  $error .= '<strong>错误</strong>：密码长度至少6位。<br />';
-	elseif($_POST['user_pass'] != $_POST['user_pass2'])
-	  $error .= '<strong>错误</strong>：两次输入的密码不一致。<br />';
+	}elseif($_POST['user_pass'] != $_POST['user_pass2']){
+		$error .= '<strong>错误</strong>：两次输入的密码不一致。<br />';
+	}
 
-	  if($error == '') {
-	  $user_id = wp_create_user( $sanitized_user_login, $_POST['user_pass'], $user_email );
+	// verification
+	if(strlen($_POST['verification']) > 0 ){
+		$error .= '<strong>错误</strong>：请拖动滑块验证身份<br />';
+	}
 
-	  if ( ! $user_id ) {
-	    $error .= sprintf( '<strong>错误</strong>：无法完成注册请求... 请联系<a href=\"mailto:%s\">管理员</a>！<br />', get_option( 'admin_email' ) );
-	  }
-	  else if (!is_user_logged_in()) {
-	    $user = get_userdatabylogin($sanitized_user_login);
-	    $user_id = $user->ID;
-
-	    // 自动登录
-	    wp_set_current_user($user_id, $user_login);
-	    wp_set_auth_cookie($user_id);
-	    do_action('wp_login', $user_login);
-	  }
+	if($error == '') {
+		$user_id = wp_create_user( $sanitized_user_login, $_POST['user_pass'], $user_email );
+		if ( !$user_id ) {
+			$error .= sprintf( '<strong>错误</strong>：无法完成注册请求... 请联系<a href=\"mailto:%s\">管理员</a>！<br />', get_option( 'admin_email' ) );
+		}else if (!is_user_logged_in()) {
+			$user = get_userdatabylogin($sanitized_user_login);
+			$user_id = $user->ID;
+			// 自动登录
+			wp_set_current_user($user_id, $user_login);
+			wp_set_auth_cookie($user_id);
+			do_action('wp_login', $user_login);
+		}
 	}
 }
 ?>
@@ -66,18 +69,127 @@ if( !empty($_POST['register_reg']) ) {
 					<p><input type="text" name="user_email" tabindex="2" id="user_email" class="input" value="<?php if(!empty($user_email)) echo $user_email; ?>" size="25" placeholder="电子邮箱" required /></p>
 					<p><input id="user_pwd1" class="input" tabindex="3" type="password" tabindex="21" size="25" value="" name="user_pass" placeholder="密码" required /></p>
 					<p><input id="user_pwd2" class="input" tabindex="4" type="password" tabindex="21" size="25" value="" name="user_pass2" placeholder="确认密码" required /></p>
+					<div id="verification-slider">
+						<div id="slider">
+							<div id="slider_bg"></div>
+							<span id="label">»</span><span id="labelTip">拖动滑块验证</span>
+						</div>
+						<input type="hidden" name="verification" value="verification" />
+					</div>
 					<input type="hidden" name="register_reg" value="ok" />
 					<?php if(!empty($error)) { echo '<p class="user-error">'.$error.'</p>'; } ?>
 					<input class="button register-button" name="submit" type="submit" value="注 册">
 				</form>
 			</div>
-		<?php }else{ ?>
-			<script>window.location.href='<?php echo akina_option('exlogin_url') ?>';</script>
+		<?php }else{ 
+		$loadurl = akina_option('exlogin_url') ? akina_option('exlogin_url') : bloginfo('url');
+		?>
+		<script>window.location.href='<?php echo $loadurl; ?>';</script>
 		<?php } ?>
 		<?php else : ?>
 			<div class="register-close"><p>暂未开放注册。</p></div>
 		<?php endif; ?>
 		</main><!-- #main -->
 	</div><!-- #primary -->
+<style type="text/css">
+#slider {
+	margin: 0 auto 20px auto;
+	width: 300px;
+	height: 46px;
+	position: relative;
+	border-radius: 3px;
+	background-color: #eee;
+	overflow: hidden;
+	text-align: center;
+	user-select: none;
+	-moz-user-select: none;
+	-webkit-user-select: none;
+}
+
+#slider_bg {
+	position: absolute;
+	left: 0;
+	top: 0;
+	height: 100%;
+	background-color: #444;
+	z-index: 1;
+	border-radius: 3px 0 0 3px;
+}
+
+#label {
+	width: 46px;
+	position: absolute;
+	left: 0;
+	top: 0;
+	height: 46px;
+	line-height: 38px;
+	border: 1px solid #ddd;
+	background: #fff;
+	z-index: 3;
+	cursor: move;
+	color: #E67474;
+	font-size: 38px;
+	font-weight: 900;
+	border-radius: 3px;
+}
+
+#labelTip {
+	position: absolute;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	font-size: 13px;
+	font-family: 'Microsoft Yahei', serif;
+	color: #888;
+	line-height: 46px;
+	text-align: center;
+	z-index: 2;
+}
+#verification-slider{
+	margin: 1em;
+}
+#verification-ok{
+	color: #777;
+}
+</style>
+
 <?php
 get_footer();
+?>
+<script type="text/javascript">
+	var startTime = 0;
+	var endTime = 0;
+	var numTime = 0;
+	$(function () {
+	    var slider = new SliderUnlock("#slider",{
+	    successLabelTip : "OK"
+	},function(){
+		var sli_width = $("#slider_bg").width();
+        $('#verification-slider').html('').append('<input id="verification-ok" class="input" type="text" size="25" value="验证成功" name="verification" disabled="true" />');
+        
+        endTime = nowTime();
+        numTime = endTime-startTime;
+        endTime = 0;
+        startTime = 0;
+        // 获取到滑动使用的时间 滑动的宽度
+        // alert( numTime );
+        // alert( sli_width );
+	});
+		slider.init();
+	})
+
+	/**
+	* 获取时间精确到毫秒
+	* @type
+	*/
+	function nowTime(){
+		var myDate = new Date();
+		var H = myDate.getHours();//获取小时
+		var M = myDate.getMinutes(); //获取分钟
+		var S = myDate.getSeconds();//获取秒
+		var MS = myDate.getMilliseconds();//获取毫秒
+		var milliSeconds = H * 3600 * 1000 + M * 60 * 1000 + S * 1000 + MS;
+		return milliSeconds;
+	}
+</script>
+<script type='text/javascript' src='<?php bloginfo("template_url"); ?>/user/verification.js'></script>
