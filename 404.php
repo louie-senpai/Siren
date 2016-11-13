@@ -6,7 +6,6 @@
  *
  * @package Akina
  */
-
  ?>
 <html <?php language_attributes(); ?>>
 <head>

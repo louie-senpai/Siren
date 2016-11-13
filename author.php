@@ -1,7 +1,13 @@
 <?php
+/**
+ * The template for displaying author pages.
+ *
+ * @link https://codex.wordpress.org/Template_Hierarchy
+ *
+ * @package Akina
+ */
 
 get_header(); 
-
 ?>
 <div class="author_info">
 	<div class="avatar">
