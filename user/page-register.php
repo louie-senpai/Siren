@@ -2,7 +2,6 @@
 /**
  Template Name: Register
  */
-
 get_header();
 if( !empty($_POST['register_reg']) ) {
 	$error = '';
