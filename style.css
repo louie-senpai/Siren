@@ -5,7 +5,7 @@ Theme URI: http://i94.me
 Author: Louie
 Author URI: http://i94.me
 Description: Akina主题分支（原版地址 http://www.akina.pw/themeakina）
-Version: 2.0.3
+Version: 2.0.4
 License: GNU General Public License v2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: akina
@@ -36,26 +36,22 @@ Tags: Akina（娱乐版）
 ## Galleries
 --------------------------------------------------------------*/
 #content{
-    animation: main 1.5s;
+    animation: main 1s;
 }
 
 .headertop,
 .pattern-center {
-    animation: header 1.5s;
+    animation: header 1s;
 }
 
 .site-branding {
-    animation: sitetop 1.5s;
+    animation: sitetop 1s;
 }
 
 .searchbox,
 .site-top .lower,
 .header-user-avatar{
-    animation: searchbox 1.5s;
-}
-
-#wave-canvas{
-    animation: wave-canvas .6s;
+    animation: searchbox 1s;
 }
 
 @keyframes header {
@@ -99,17 +95,6 @@ Tags: Akina（娱乐版）
     100% {
         opacity: 1;
         transform: translateX(0);
-    }
-}
-
-@keyframes wave-canvas {
-    0% {
-        opacity: 0;
-        transform: translateY(100px);
-    }
-    100% {
-        opacity: 1;
-        transform: translateY(0);
     }
 }
 
@@ -2909,6 +2894,54 @@ font-size:13px;
 color: #B3B3B3;
 }
 
+.siren-is-private input{
+    padding: 0;
+    margin: 0;
+    float: none;
+    width: initial;
+}
+.siren-is-private-label{
+    position: relative;
+    top: -8px;
+    margin: 0;
+    display:inline-block;
+    cursor: pointer;
+}
+.siren-is-private-radio{
+    display:none
+}
+.siren-is-private-radioInput{
+    background-color:#fff;
+    border:1px solid rgba(0,0,0,0.15);
+    border-radius:100%;
+    display:inline-block;
+    height:18px;
+    margin-right: 8px;
+    margin-top:-7px;
+    vertical-align:middle;
+    width:18px;
+    line-height:1
+}
+.siren-is-private-radio:checked + .siren-is-private-radioInput:after{
+    background-color:#FE9600;
+    border-radius:100%;
+    content:"";
+    display:inline-block;
+    height:12px;
+    margin:2px;
+    width:12px
+}
+.siren-is-private-checkbox.siren-is-private-radioInput,
+.siren-is-private-radio:checked + .siren-is-private-checkbox.siren-is-private-radioInput:after{
+    border-radius:0
+}
+
+@media (max-width: 625px){
+    .siren-is-private-label{
+        top: 8px;
+        margin-bottom: 10px;
+    }
+}
 
 /*
 top-features
@@ -3832,11 +3865,13 @@ opacity:0.7;
     background-color: #FFFFFF;
 }
 #loading-center{
+    width: 100%;
     position: absolute;
     top: 47%;
-    left: 40%;
-    margin-left: 10%;
-    transform: translate3d(-50%, -50%, 0);
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    text-align: center;
 }
 #loading-center .dot {
     width: 24px;
@@ -4257,6 +4292,8 @@ max-width: 1245px;
 transform: translateX(250px) translateY(0px);
 -webkit-transform: translateX(250px) translateY(0px);
 position: fixed;
+right: 0;
+left: 0;
 }
 .wrapper {
 transition-duration: 0.5s;
@@ -4267,7 +4304,7 @@ height: auto;
 position: relative;
 }
 #mo-nav.open{
-width: auto;
+width: 250px;
 }
 .wrapper section{
 max-width: 600px;
@@ -4361,9 +4398,11 @@ overflow-y: auto;
 font-family: miranafont,"Hiragino Sans GB",STXihei,"Microsoft YaHei",SimSun,sans-serif;
 }
 #mo-nav .m-avatar{
-    width: 100%;
+    position: relative;
+    width: 250px;
+    max-width: 250px;
     height: auto;
-    margin: auto;
+    margin: 0 auto;
     padding: 30px 0 20px;
     text-align: center;
 }
@@ -4374,7 +4413,9 @@ font-family: miranafont,"Hiragino Sans GB",STXihei,"Microsoft YaHei",SimSun,sans
     border-radius: 100%;
 }
 #mo-nav .m-search form{
-    width: 100%;
+    position: relative;
+    width: 250px;
+    max-width: 250px;
     margin: 0 0 20px;
     padding: 8px 15px;
     background-color: #fafafa;

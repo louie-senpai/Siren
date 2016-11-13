@@ -7,7 +7,7 @@
  * @package Akina
  */
  
-define( 'SIREN_VERSION', '2.0.3' );
+define( 'SIREN_VERSION', '2.0.4' );
 
 if ( !function_exists( 'akina_setup' ) ) :
 /**
@@ -222,7 +222,7 @@ add_action( 'wp_enqueue_scripts', 'akina_scripts' );
 /**
  * load .php.
  */
-require get_template_directory() .'/inc/fn.php';
+require get_template_directory() .'/inc/decorate.php';
 
 /**
  * Custom template tags for this theme.
@@ -230,24 +230,14 @@ require get_template_directory() .'/inc/fn.php';
 require get_template_directory() . '/inc/template-tags.php';
 
 /**
- * Custom functions that act independently of the theme templates.
- */
-require get_template_directory() . '/inc/extras.php';
-
-/**
  * Customizer additions.
  */
 require get_template_directory() . '/inc/customizer.php';
 
 /**
- * Load Jetpack compatibility file.
- */
-require get_template_directory() . '/inc/jetpack.php';
-
-/**
  * function update
  */
-require get_template_directory() . '/inc/function-update.php';
+require get_template_directory() . '/inc/siren-update.php';
 require get_template_directory() . '/inc/categories-images.php';
 
 
@@ -294,7 +284,7 @@ require get_template_directory() . '/inc/categories-images.php';
  */
 function restyle_text($number) {
     if($number >= 1000) {
-        return round($number/1000,2) . "k";   // NB: you will want to round this
+        return round($number/1000,2) . "k";
     }
     else {
         return $number;
@@ -328,14 +318,75 @@ function get_post_views($post_id) {
 } 
 
 
-// Gravatar头像使用中国服务器
+// ajax点赞
+add_action('wp_ajax_nopriv_specs_zan', 'specs_zan');
+add_action('wp_ajax_specs_zan', 'specs_zan');
+function specs_zan(){
+    global $wpdb,$post;
+    $id = $_POST["um_id"];
+    $action = $_POST["um_action"];
+    if ( $action == 'ding'){
+        $specs_raters = get_post_meta($id,'specs_zan',true);
+        $expire = time() + 99999999;
+        $domain = ($_SERVER['HTTP_HOST'] != 'localhost') ? $_SERVER['HTTP_HOST'] : false; // make cookies work with localhost
+        setcookie('specs_zan_'.$id,$id,$expire,'/',$domain,false);
+        if (!$specs_raters || !is_numeric($specs_raters)) {
+            update_post_meta($id, 'specs_zan', 1);
+        } 
+        else {
+            update_post_meta($id, 'specs_zan', ($specs_raters + 1));
+        }
+        echo get_post_meta($id,'specs_zan',true);
+    } 
+    die;
+}
+
+function get_the_link_items($id = null){
+  $bookmarks = get_bookmarks('orderby=date&category=' .$id );
+  $output = '';
+  if ( !empty($bookmarks) ) {
+      $output .= '<ul class="link-items fontSmooth">';
+      foreach ($bookmarks as $bookmark) {
+          $output .=  '<li class="link-item"><a class="link-item-inner effect-apollo" href="' . $bookmark->link_url . '" title="' . $bookmark->link_description . '" target="_blank" ><span class="sitename">'. $bookmark->link_name .'</span><div class="linkdes">'. $bookmark->link_description .'</div></a></li>';
+      }
+      $output .= '</ul>';
+  }
+  return $output;
+}
+
+function get_link_items(){
+  $linkcats = get_terms( 'link_category' );
+  if ( !empty($linkcats) ) {
+      foreach( $linkcats as $linkcat){            
+          $result .=  '<h3 class="link-title">'.$linkcat->name.'</h3>';
+          if( $linkcat->description ) $result .= '<div class="link-description">' . $linkcat->description . '</div>';
+          $result .=  get_the_link_items($linkcat->term_id);
+      }
+  } else {
+      $result = get_the_link_items();
+  }
+  return $result;
+}
+
+function shortcode_link(){
+  return get_link_items();
+}
+add_shortcode('bigfalink', 'shortcode_link');
+
+
+/*
+ * Gravatar头像使用中国服务器
+ */
 function gravatar_cn( $url ){ 
 	$gravatar_url = array('0.gravatar.com','1.gravatar.com','2.gravatar.com');
 	return str_replace( $gravatar_url, 'cn.gravatar.com', $url );
 }
 add_filter( 'get_avatar_url', 'gravatar_cn', 4 );
 
-// 阻止站内文章互相Pingback 
+
+/*
+ * 阻止站内文章互相Pingback 
+ */
 function theme_noself_ping( &$links ) { 
 	$home = get_option( 'home' );
 	foreach ( $links as $l => $link )
@@ -345,24 +396,143 @@ function theme_noself_ping( &$links ) {
 add_action('pre_ping','theme_noself_ping');
 
 
-// 编辑器增强
- function enable_more_buttons($buttons) { 
-	 $buttons[] = 'hr'; 
-	 $buttons[] = 'del'; 
-	 $buttons[] = 'sub'; 
-	 $buttons[] = 'sup';
-	 $buttons[] = 'fontselect';
-	 $buttons[] = 'fontsizeselect';
-	 $buttons[] = 'cleanup';
-	 $buttons[] = 'styleselect';
-	 $buttons[] = 'wp_page';
-	 $buttons[] = 'anchor'; 
-	 $buttons[] = 'backcolor'; 
-	 return $buttons;
- } 
-add_filter("mce_buttons_3", "enable_more_buttons");
+/*
+ * 订制body类
+*/
+function akina_body_classes( $classes ) {
+  // Adds a class of group-blog to blogs with more than 1 published author.
+  if ( is_multi_author() ) {
+    $classes[] = 'group-blog';
+  }
+  // Adds a class of hfeed to non-singular pages.
+  if ( ! is_singular() ) {
+    $classes[] = 'hfeed';
+  }
+  return $classes;
+}
+add_filter( 'body_class', 'akina_body_classes' );
 
-// 拦截机器评论
+
+/*
+ * 图片七牛云缓存
+ */
+add_filter( 'upload_dir', 'wpjam_custom_upload_dir' );
+function wpjam_custom_upload_dir( $uploads ) {
+	$upload_path = '';
+	$upload_url_path = akina_option('qiniu_cdn');
+
+	if ( empty( $upload_path ) || 'wp-content/uploads' == $upload_path ) {
+		$uploads['basedir']  = WP_CONTENT_DIR . '/uploads';
+	} elseif ( 0 !== strpos( $upload_path, ABSPATH ) ) {
+		$uploads['basedir'] = path_join( ABSPATH, $upload_path );
+	} else {
+		$uploads['basedir'] = $upload_path;
+	}
+
+	$uploads['path'] = $uploads['basedir'].$uploads['subdir'];
+
+	if ( $upload_url_path ) {
+		$uploads['baseurl'] = $upload_url_path;
+		$uploads['url'] = $uploads['baseurl'].$uploads['subdir'];
+	}
+	return $uploads;
+}
+
+
+/*
+ * 删除自带小工具
+*/
+function unregister_default_widgets() {
+	unregister_widget("WP_Widget_Pages");
+	unregister_widget("WP_Widget_Calendar");
+	unregister_widget("WP_Widget_Archives");
+	unregister_widget("WP_Widget_Links");
+	unregister_widget("WP_Widget_Meta");
+	unregister_widget("WP_Widget_Search");
+	unregister_widget("WP_Widget_Text");
+	unregister_widget("WP_Widget_Categories");
+	unregister_widget("WP_Widget_Recent_Posts");
+	unregister_widget("WP_Widget_Recent_Comments");
+	unregister_widget("WP_Widget_RSS");
+	unregister_widget("WP_Widget_Tag_Cloud");
+	unregister_widget("WP_Nav_Menu_Widget");
+}
+add_action("widgets_init", "unregister_default_widgets", 11);
+
+
+/**
+ * Jetpack setup function.
+ *
+ * See: https://jetpack.com/support/infinite-scroll/
+ * See: https://jetpack.com/support/responsive-videos/
+ */
+function akina_jetpack_setup() {
+  // Add theme support for Infinite Scroll.
+  add_theme_support( 'infinite-scroll', array(
+    'container' => 'main',
+    'render'    => 'akina_infinite_scroll_render',
+    'footer'    => 'page',
+  ) );
+
+  // Add theme support for Responsive Videos.
+  add_theme_support( 'jetpack-responsive-videos' );
+}
+add_action( 'after_setup_theme', 'akina_jetpack_setup' );
+
+/**
+ * Custom render function for Infinite Scroll.
+ */
+function akina_infinite_scroll_render() {
+  while ( have_posts() ) {
+    the_post();
+    if ( is_search() ) :
+        get_template_part( 'tpl/content', 'search' );
+    else :
+        get_template_part( 'tpl/content', get_post_format() );
+    endif;
+  }
+}
+
+
+/*
+ * 编辑器增强
+ */
+function enable_more_buttons($buttons) { 
+	$buttons[] = 'hr'; 
+	$buttons[] = 'del'; 
+	$buttons[] = 'sub'; 
+	$buttons[] = 'sup';
+	$buttons[] = 'fontselect';
+	$buttons[] = 'fontsizeselect';
+	$buttons[] = 'cleanup';
+	$buttons[] = 'styleselect';
+	$buttons[] = 'wp_page';
+	$buttons[] = 'anchor'; 
+	$buttons[] = 'backcolor'; 
+	return $buttons;
+} 
+add_filter("mce_buttons_3", "enable_more_buttons");
+// 下载按钮
+function download($atts, $content = null) {  
+return '<a class="download" href="'.$content.'" rel="external"  
+target="_blank" title="下载地址">  
+<span><i class="iconfont down">&#xe60a;</i>Download</span></a>';}  
+add_shortcode("download", "download"); 
+
+add_action('after_wp_tiny_mce', 'bolo_after_wp_tiny_mce');  
+function bolo_after_wp_tiny_mce($mce_settings) {  
+?>  
+<script type="text/javascript">  
+QTags.addButton( 'download', '下载按钮', "[download]下载地址[/download]" );
+function bolo_QTnextpage_arg1() {
+}  
+</script>  
+<?php } 
+
+
+/*
+ * 拦截机器评论
+ */
 class anti_spam { 
 	function anti_spam() {
 		if ( !current_user_can('level_0') ) {
@@ -415,63 +585,50 @@ add_filter('preprocess_comment', 'scp_comment_post');
  * @Author M.J
  * @Date 2013-12-24
  */	
-	//Login Page
-	function custom_login() {
-		echo '<link rel="stylesheet" type="text/css" href="' . get_bloginfo('template_directory') . '/inc/login.css" />'."\n";
-		echo '<script type="text/javascript" src="'.get_bloginfo('template_directory').'/js/jquery.min.js"></script>'."\n";
+//Login Page
+function custom_login() {
+	echo '<link rel="stylesheet" type="text/css" href="' . get_bloginfo('template_directory') . '/inc/login.css" />'."\n";
+	echo '<script type="text/javascript" src="'.get_bloginfo('template_directory').'/js/jquery.min.js"></script>'."\n";
+}
+add_action('login_head', 'custom_login');
+
+//Login Page Title
+function custom_headertitle ( $title ) {
+	return get_bloginfo('name');
+}
+add_filter('login_headertitle','custom_headertitle');
+
+//Login Page Link
+function custom_loginlogo_url($url) {
+	return esc_url( home_url('/') );
+}
+add_filter( 'login_headerurl', 'custom_loginlogo_url' );
+
+//Login Page Footer
+function custom_html() {
+	if ( akina_option('login_bg') == true ) {
+		$loginbg = akina_option('login_bg'); 
+	}elseif(akina_option('login_bg_bing') == true ){
+		$loginbg = bingimage(); //必应图片
+	}else{
+		$loginbg = get_bloginfo('template_directory').'/images/hd.png';
 	}
-	add_action('login_head', 'custom_login');
+	echo '<script type="text/javascript" src="'.get_bloginfo('template_directory').'/js/login.js"></script>'."\n";
+	echo '<script type="text/javascript">'."\n";
+	echo 'jQuery("body").prepend("<div class=\"loading\"><img src=\"'.get_bloginfo('template_directory').'/images/login_loading.gif\" width=\"58\" height=\"10\"></div><div id=\"bg\"><img /></div>");'."\n";
+	echo 'jQuery(\'#bg\').children(\'img\').attr(\'src\', \''.$loginbg.'\').load(function(){'."\n";
+	echo '	resizeImage(\'bg\');'."\n";
+	echo '	jQuery(window).bind("resize", function() { resizeImage(\'bg\'); });'."\n";
+	echo '	jQuery(\'.loading\').fadeOut();'."\n";
+	echo '});';
+	echo '</script>'."\n";
+}
+add_action('login_footer', 'custom_html');
 
-	//Login Page Title
-	function custom_headertitle ( $title ) {
-		return get_bloginfo('name');
-	}
-	add_filter('login_headertitle','custom_headertitle');
 
-	//Login Page Link
-	function custom_loginlogo_url($url) {
-		return esc_url( home_url('/') );
-	}
-	add_filter( 'login_headerurl', 'custom_loginlogo_url' );
-
-	//Login Page Footer
-	function custom_html() {
-		if ( akina_option('login_bg') == true ) {
-			$loginbg = akina_option('login_bg'); 
-		}elseif(akina_option('login_bg_bing') == true ){
-			$loginbg = bingimage(); //必应图片
-		}else{
-			$loginbg = get_bloginfo('template_directory').'/images/hd.png';
-		}
-		echo '<script type="text/javascript" src="'.get_bloginfo('template_directory').'/js/login.js"></script>'."\n";
-		echo '<script type="text/javascript">'."\n";
-		echo 'jQuery("body").prepend("<div class=\"loading\"><img src=\"'.get_bloginfo('template_directory').'/images/login_loading.gif\" width=\"58\" height=\"10\"></div><div id=\"bg\"><img /></div>");'."\n";
-		echo 'jQuery(\'#bg\').children(\'img\').attr(\'src\', \''.$loginbg.'\').load(function(){'."\n";
-		echo '	resizeImage(\'bg\');'."\n";
-		echo '	jQuery(window).bind("resize", function() { resizeImage(\'bg\'); });'."\n";
-		echo '	jQuery(\'.loading\').fadeOut();'."\n";
-		echo '});';
-		echo '</script>'."\n";
-	}
-	add_action('login_footer', 'custom_html');
-
-function download($atts, $content = null) {  
-return '<a class="download" href="'.$content.'" rel="external"  
-target="_blank" title="下载地址">  
-<span><i class="iconfont down">&#xe60a;</i>Download</span></a>';}  
-add_shortcode("download", "download"); 
-
-add_action('after_wp_tiny_mce', 'bolo_after_wp_tiny_mce');  
-function bolo_after_wp_tiny_mce($mce_settings) {  
-?>  
-<script type="text/javascript">  
-QTags.addButton( 'download', '下载按钮', "[download]下载地址[/download]" );
-function bolo_QTnextpage_arg1() {
-}  
-</script>  
-<?php } 
-
-//评论邮件回复
+/*
+ * 评论邮件回复
+ */
 function comment_mail_notify($comment_id){
     $comment = get_comment($comment_id);
     $parent_id = $comment->comment_parent ? $comment->comment_parent : '';

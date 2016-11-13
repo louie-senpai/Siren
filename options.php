@@ -560,7 +560,7 @@ function optionsframework_options() {
 
 	$options[] = array(
 		'name' => __('公告内容', 'options_framework_theme'),
-		'desc' => __('公告内容', 'options_framework_theme'),
+		'desc' => __('公告内容，文字超出142个字节将会被滚动显示（移动端无效），一个汉字 = 3字节，一个字母 = 1字节，自己计算吧', 'options_framework_theme'),
 		'id' => 'notice_title',
 		'std' => '',
 		'type' => 'text');
@@ -578,6 +578,13 @@ function optionsframework_options() {
 		'id' => 'image_category',
 		'std' => '',
 		'type' => 'text');
+
+	$options[] = array(
+		'name' => __('允许私密评论', 'options_framework_theme'),
+		'desc' => __('允许用户设置自己的评论对其他人不可见', 'options_framework_theme'),
+		'id' => 'open_private_message',
+		'std' => '0',
+		'type' => 'checkbox');
 
 	$options[] = array(
 		'name' => __('开启多说插件支持', 'options_framework_theme'),

@@ -60,11 +60,11 @@ if (!!window.ActiveXObject || "ActiveXObject" in window) { //is IE?
 		<div class="icon"></div>
 	</div>
 	<div class="site-branding">
-		<?php if (akina_option('akina_logo')):?>
-		 <div class="site-title"><a href="<?php bloginfo('url');?>" ><img src="<?php echo akina_option('akina_logo', ''); ?>"></a></div>
-		<?php else :?>
+		<?php if (akina_option('akina_logo')){ ?>
+		 <div class="site-title"><a href="<?php bloginfo('url');?>" ><img src="<?php echo akina_option('akina_logo'); ?>"></a></div>
+		<?php }else{ ?>
 		 <h1 class="site-title"><a href="<?php bloginfo('url');?>" ><?php bloginfo('name');?></a></h1>	
-		<?php endif ;?>	<!-- logo end -->		  
+		<?php } ?>	<!-- logo end -->		  
 	</div><!-- .site-branding -->
 </div> <!-- M-NAV END -->
 <?php if ( !akina_option('head_focus') ) { ?>
@@ -76,15 +76,15 @@ if (!!window.ActiveXObject || "ActiveXObject" in window) { //is IE?
 	<header class="site-header" role="banner">
 	 <div class="site-top">
 		<div class="site-branding">
-		  <?php if (akina_option('akina_logo')):?>
-		     <div class="site-title"><a href="<?php bloginfo('url');?>" ><img src="<?php echo akina_option('akina_logo', ''); ?>"></a></div>
-		  <?php else :?>
-             <h1 class="site-title"><a href="<?php bloginfo('url');?>" ><?php bloginfo('name');?></a></h1>	
-          <?php endif ;?>	
+		  <?php if (akina_option('akina_logo')){ ?>
+		    <div class="site-title"><a href="<?php bloginfo('url');?>" ><img src="<?php echo akina_option('akina_logo'); ?>"></a></div>
+		  <?php }else{ ?>
+            <h1 class="site-title"><a href="<?php bloginfo('url');?>" ><?php bloginfo('name');?></a></h1>	
+          <?php } ?>	
         <!-- logo end -->
 		</div><!-- .site-branding -->
-		<?php header_user_menu() ?><!-- User menu -->
-		<?php if ( akina_option('top_search') ) { ?>
+		<?php header_user_menu(); ?><!-- User menu -->
+		<?php if ( akina_option('top_search') == 'yes' ) { ?>
 		<div class="searchbox">
 			<i class="iconfont js-toggle-search iconsearch">&#xe603;</i>
 		</div>
@@ -103,5 +103,5 @@ if (!!window.ActiveXObject || "ActiveXObject" in window) { //is IE?
 		</div>	
 	 </div>
 	</header><!-- #masthead -->
-	<?php headPattern(); //文章装饰图?>
+	<?php headPattern(); ?>
     <div id="content" class="site-content">

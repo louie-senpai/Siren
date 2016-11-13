@@ -50,6 +50,7 @@
 			<?php
 
 				if(comments_open()){
+					$private_ms = akina_option('open_private_message') ? '<label class="siren-is-private-label"><input class="siren-is-private-radio" type="checkbox" name="is-private"><span class="siren-is-private-checkbox siren-is-private-radioInput"></span>私密评论</label>' : '';
 					$args = array(
 						'id_form'           => 'commentform',
 						'id_submit'         => 'submit',
@@ -63,13 +64,10 @@
 						'fields' => apply_filters( 'comment_form_default_fields', array(
 							'author' =>
 								'<input type="text" placeholder="' . esc_attr__('昵称', 'akina') . ' ' . ( $req ?  '(' . esc_attr__('必须', 'akina') . ')' : '') . '" name="author" id="author" value="' . esc_attr($comment_author) . '" size="22" tabindex="1" ' . ($req ? "aria-required='true'" : '' ). ' />',
-
 							'email' =>
 								'<input type="text" placeholder="' . esc_attr__('邮箱', 'akina') . ' ' . ( $req ? '(' . esc_attr__('必须', 'akina') . ')' : '') . '" name="email" id="email" value="' . esc_attr($comment_author_email) . '" size="22" tabindex="1" ' . ($req ? "aria-required='true'" : '' ). ' />',
-
 							'url' =>
-								'<input type="text" placeholder="' . esc_attr__('网站', 'akina') . '" name="url" id="url" value="' . esc_attr($comment_author_url) . '" size="22" tabindex="1" />'
-
+								'<input type="text" placeholder="' . esc_attr__('网站', 'akina') . '" name="url" id="url" value="' . esc_attr($comment_author_url) . '" size="22" tabindex="1" />' . $private_ms
 							)
 						)
 					);

@@ -10,7 +10,6 @@
 ?>
 
 <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
-
 <?php if(akina_option('patternimg') || !get_post_thumbnail_id(get_the_ID())) { ?>
 	<div class="Extendfull">
   	<?php the_post_thumbnail('full'); ?>
@@ -21,8 +20,7 @@
 	</header>
 	</div>
 <?php } ?>
-<!-- .entry-header -->
-
+	<!-- .entry-header -->
 	<div class="entry-content">
 		<?php the_content(); ?>
 		<?php
@@ -32,14 +30,10 @@
 			) );
 		?>
 	</div><!-- .entry-content -->
-
 	<footer class="post-footer">
-	
 	<div class="post-tags">
 			<?php if ( has_tag() ) { echo '<i class="iconfont">&#xe602;</i> '; the_tags('', ' ', ' ');}?>
 		</div>
-		 <?php get_template_part('inc/sharelike'); ?>
-		
-	
+		 <?php get_template_part('layouts/sharelike'); ?>
 	</footer><!-- .entry-footer -->
 </article><!-- #post-## -->

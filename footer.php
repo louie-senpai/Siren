@@ -12,7 +12,7 @@
 ?>
 	</div><!-- #content -->
 	 <?php 
-		if(akina_option('general_disqus_plugin_support')=='1'){
+		if(akina_option('general_disqus_plugin_support')){
 			get_template_part('layouts/duoshuo');
 		}else{
 			comments_template('', true); 

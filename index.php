@@ -14,12 +14,18 @@
 get_header();
 ?>
    
-   <?php if ( akina_option('head_notice') != '0'){ ?>
+   <?php if ( akina_option('head_notice') != '0'){ 
+   		$text = akina_option('notice_title');
+   	?>
 	<div class="notice">
-	   <i class="iconfont">&#xe607;</i>  
-		<div class="notice-content">
-		<?php echo akina_option('notice_title');?>
-		</div>
+	   <i class="iconfont">&#xe607;</i>
+	  <?php if(strlen($text) > 142 && !wp_is_mobile()){ ?> 
+	  	<marquee align="middle" behavior="scroll" loop="-1" scrollamount="6" style="margin: 0 5px 0 20px; display: block;" onMouseOut="this.start()" onMouseOver="this.stop()">
+			<div class="notice-content"><?php echo $text; ?></div>
+		</marquee>
+		<?php }else{ ?>
+			<div class="notice-content"><?php echo $text; ?></div>
+		<?php } ?>
 	</div>
 	<?php } ?>
 	

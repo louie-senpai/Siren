@@ -14,7 +14,7 @@
 		<?php if ( has_post_thumbnail() ) { ?>
 			<a href="<?php the_permalink();?>"><div class="overlay"><i class="iconfont">&#xe61e;</i></div><?php the_post_thumbnail(); ?></a>
 			<?php } else {?>
-			<a href="<?php the_permalink();?>"><div class="overlay"><i class="iconfont">&#xe61e;</i></div><img src="<?php bloginfo('template_url'); ?>/images/default.jpg" /></a>
+			<a href="<?php the_permalink();?>"><div class="overlay"><i class="iconfont">&#xe61e;</i></div><img src="<?php bloginfo('template_url'); ?>/images/random/d-<?php echo rand(1,10)?>.jpg" /></a>
 			<?php } ?>
 		</div>	
 		<h1 class="entry-title"><a href="<?php the_permalink();?>"><?php the_title();?></a></h1>
@@ -25,7 +25,6 @@
 	  	<i class="iconfont">&#xe604;</i> <?php echo poi_time_since(strtotime($post->post_date_gmt)); ?>
 	  	</div>
 		<p><?php echo mb_strimwidth(strip_shortcodes(strip_tags(apply_filters('the_content', $post->post_content))), 0, 150,"...");?></p>
-
 		<footer class="entry-footer">
 		<div class="post-more">
 			<a href="<?php the_permalink(); ?>"><i class="iconfont">&#xe61c;</i></a>

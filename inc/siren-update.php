@@ -10,7 +10,9 @@ remove_filter('term_description', 'wp_kses_data');
 show_admin_bar(false);
 
 
-// 首页视频
+/*
+ * 视频
+ */
 function bgvideo(){
   if(!akina_option('focus_amv') || akina_option('focus_height')){$dis = 'display:none;';}
   $html = '<div id="video-container" style="'.$dis.'">'; 
@@ -22,7 +24,10 @@ function bgvideo(){
   return $html;
 }
 
-// 使用本地图片作为头像，防止外源抽风问题
+
+/*
+ * 使用本地图片作为头像，防止外源抽风问题
+ */
 function get_avatar_profile_url(){ 
   if(akina_option('focus_logo')){
     $avatar = akina_option('focus_logo');
@@ -33,20 +38,24 @@ function get_avatar_profile_url(){
 }
 
 
-// 获取每日必应图片
+/*
+ * 获取每日必应图片
+ */
 function bingimage(){
-   $str = curl_init();
-   curl_setopt($str, CURLOPT_URL, 'http://www.bing.com/HPImageArchive.aspx?format=js&idx=0&n=1');
-   curl_setopt($str, CURLOPT_RETURNTRANSFER, 1);
-   $re = curl_exec($str);
-   $re = json_decode($re,1);
+  $str = curl_init();
+  curl_setopt($str, CURLOPT_URL, 'http://www.bing.com/HPImageArchive.aspx?format=js&idx=0&n=1');
+  curl_setopt($str, CURLOPT_RETURNTRANSFER, 1);
+  $re = curl_exec($str);
+  $re = json_decode($re,1);
   return ''.$re['images'][0]['url'].'';
 }
 
 
-// 微博时间样式
-// poi_time_since(strtotime($post->post_date_gmt));
-// poi_time_since(strtotime($comment->comment_date_gmt), true );
+/*
+ * 订制时间样式
+ * poi_time_since(strtotime($post->post_date_gmt));
+ * poi_time_since(strtotime($comment->comment_date_gmt), true );
+ */
 function poi_time_since( $older_date, $comment_date = false, $text = false ) {
   $chunks = array(
     array( 24 * 60 * 60, __( ' 天前', 'akina' ) ),
@@ -80,38 +89,9 @@ function poi_time_since( $older_date, $comment_date = false, $text = false ) {
 }
 
 
-// 删除后台某些版权和链接
-add_filter('admin_title', 'wpdx_custom_admin_title', 10, 2);
-function wpdx_custom_admin_title($admin_title, $title){
-    return $title.' &lsaquo; '.get_bloginfo('name');
-}
-//去掉Wordpress LOGO
-function remove_logo($wp_toolbar) {
-    $wp_toolbar->remove_node('wp-logo');
-}
-add_action('admin_bar_menu', 'remove_logo', 999);
-
-//去掉Wordpress 底部版权
-function change_footer_admin () {return '';}  
-add_filter('admin_footer_text', 'change_footer_admin', 9999);  
-function change_footer_version() {return '';}  
-add_filter( 'update_footer', 'change_footer_version', 9999);
-
-//去掉Wordpres挂件
-function disable_dashboard_widgets() {   
-    //remove_meta_box('dashboard_recent_comments', 'dashboard', 'normal');//近期评论 
-    //remove_meta_box('dashboard_recent_drafts', 'dashboard', 'normal');//近期草稿
-    remove_meta_box('dashboard_primary', 'dashboard', 'core');//wordpress博客  
-    remove_meta_box('dashboard_secondary', 'dashboard', 'core');//wordpress其它新闻  
-    remove_meta_box('dashboard_right_now', 'dashboard', 'core');//wordpress概况  
-    //remove_meta_box('dashboard_incoming_links', 'dashboard', 'core');//wordresss链入链接  
-    //remove_meta_box('dashboard_plugins', 'dashboard', 'core');//wordpress链入插件  
-    //remove_meta_box('dashboard_quick_press', 'dashboard', 'core');//wordpress快速发布   
-}  
-add_action('admin_menu', 'disable_dashboard_widgets');
-
-
-// 首页不显示指定的分类文章
+/*
+ * 首页不显示指定的分类文章
+ */
 if(akina_option('classify_display')){
 
   function classify_display($query){
@@ -132,7 +112,9 @@ if(akina_option('classify_display')){
 }
 
 
-// 评论添加@
+/*
+ * 评论添加@
+ */
 function comment_add_at( $comment_text, $comment = '') {
   if( $comment->comment_parent > 0) {
     $comment_text = '<a href="#comment-' . $comment->comment_parent . '" class="comment-at">@'.get_comment_author( $comment->comment_parent ) . '</a><br/> ' . $comment_text;
@@ -142,7 +124,9 @@ function comment_add_at( $comment_text, $comment = '') {
 add_filter( 'comment_text' , 'comment_add_at', 20, 2);
 
 
-// Ajax评论
+/*
+ * Ajax评论
+ */
 if ( version_compare( $GLOBALS['wp_version'], '4.4-alpha', '<' ) ) { wp_die('请升级到4.4以上版本'); }
 if(!function_exists('fa_ajax_comment_err')) {
     function fa_ajax_comment_err($a) {
@@ -201,6 +185,9 @@ add_action('wp_ajax_nopriv_ajax_comment', 'fa_ajax_comment_callback');
 add_action('wp_ajax_ajax_comment', 'fa_ajax_comment_callback');
 
 
+/*
+ * 前台登陆
+ */
 // 指定登录页面
 if(akina_option('exlogin_url')){
   add_action('login_enqueue_scripts','login_protection');
@@ -213,7 +200,7 @@ if(akina_option('exlogin_url')){
   }
 }
 
-// 跳转定时
+// 登陆跳转
 function Exuser_center(){ ?>
   <script language='javascript' type='text/javascript'> 
     var secs = 5; //倒计时的秒数 
@@ -238,12 +225,12 @@ function Exuser_center(){ ?>
   <?php if(current_user_can('level_10')){ ?>
   <div class="admin-login-check">
     <?php echo login_ok(); ?>
-    <?php if(akina_option('login_urlskip')){ ?><script>gopage("<?php bloginfo( 'url' ); ?>/wp-admin/",1);</script><?php } ?>
+    <?php if(akina_option('login_urlskip')){ ?><script>gopage("<?php bloginfo('url'); ?>/wp-admin/",1);</script><?php } ?>
   </div>
   <?php }else{ ?>
   <div class="user-login-check">
     <?php echo login_ok(); ?>
-    <?php if(akina_option('login_urlskip')){ ?><script>gopage("<?php bloginfo( 'url' ); ?>",0);</script><?php } ?>
+    <?php if(akina_option('login_urlskip')){ ?><script>gopage("<?php bloginfo('url'); ?>",0);</script><?php } ?>
   </div>
 <?php 
   }
@@ -259,16 +246,20 @@ function login_ok(){
   <?php if($current_user->user_email){echo '<p>'.$current_user->user_email.'</p>';} ?>
   <p id="login-showtime"></p>
   <p class="ex-logout">
-    <a href="<?php echo home_url(); ?>" title="首页">首页</a>
-    <?php if(current_user_can('level_10')){  ?><a href="<?php bloginfo( 'url' ); ?>/wp-admin/" title="后台" target="_top">后台</a> <?php } ?>
-    <a href="<?php echo wp_logout_url(home_url()); ?>" title="登出" target="_top">登出？</a>
+    <a href="<?php bloginfo('url'); ?>" title="首页">首页</a>
+    <?php if(current_user_can('level_10')){  ?>
+    <a href="<?php bloginfo('url'); ?>/wp-admin/" title="后台" target="_top">后台</a> 
+    <?php } ?>
+    <a href="<?php echo wp_logout_url(get_bloginfo('url')); ?>" title="登出" target="_top">登出？</a>
   </p>
 <?php 
 }
 
 
-// 文章装饰图
-function headPattern(){ // 我也不知道我写的是什么鬼。
+/*
+ * 文章，页面头部背景图
+ */
+function headPattern(){
   $t = ''; // 标题
   $full_image_url = wp_get_attachment_image_src(get_post_thumbnail_id(get_the_ID()), 'full');
   if(is_single()){
@@ -304,36 +295,39 @@ function headPattern(){ // 我也不知道我写的是什么鬼。
   
 }
 
-// 导航栏用户菜单
+
+/*
+ * 导航栏用户菜单
+ */
 function header_user_menu(){
   global $current_user;get_currentuserinfo(); 
   if(is_user_logged_in()){
-    $ava = akina_option('focus_logo', '') ? akina_option('focus_logo', '') : get_avatar_url( $current_user->user_email );
+    $ava = akina_option('focus_logo') ? akina_option('focus_logo') : get_avatar_url( $current_user->user_email );
     ?>
     <div class="header-user-avatar">
-      <img src="<?php echo $ava ?>" width="30" height="30">
+      <img src="<?php echo $ava; ?>" width="30" height="30">
       <div class="header-user-menu">
         <div class="herder-user-name">Signed in as 
           <div class="herder-user-name-u"><?php echo $current_user->display_name; ?></div>
         </div>
         <div class="user-menu-option">
-          <?php if (current_user_can('level_10')) : ?>
-            <a href="<?php echo bloginfo( 'url' );?>/wp-admin/" target="_top">管理中心</a>
-            <a href="<?php echo bloginfo( 'url' );?>/wp-admin/post-new.php" target="_top">撰写文章</a>
-          <?php endif; ?>
-          <a href="<?php echo bloginfo( 'url' );?>/wp-admin/profile.php" target="_top">个人资料</a>
-          <a href="<?php echo wp_logout_url(home_url()); ?>" target="_top">退出登录</a>
+          <?php if (current_user_can('level_10')) { ?>
+            <a href="<?php bloginfo('url'); ?>/wp-admin/" target="_top">管理中心</a>
+            <a href="<?php bloginfo('url'); ?>/wp-admin/post-new.php" target="_top">撰写文章</a>
+          <?php } ?>
+          <a href="<?php bloginfo('url'); ?>/wp-admin/profile.php" target="_top">个人资料</a>
+          <a href="<?php echo wp_logout_url(get_bloginfo('url')); ?>" target="_top">退出登录</a>
         </div>
       </div>
     </div>
   <?php
   }else{ 
     $ava = get_template_directory_uri().'/images/none.png';
-    $login_url = akina_option('exlogin_url') ? akina_option('exlogin_url') : bloginfo( 'url' ).'/wp-login.php';
+    $login_url = akina_option('exlogin_url') ? akina_option('exlogin_url') : get_bloginfo('url').'/wp-login.php';
   ?>
   <div class="header-user-avatar">
     <a href="<?php echo $login_url; ?>">
-      <img src="<?php echo $ava ?>" width="30" height="30">
+      <img src="<?php echo $ava; ?>" width="30" height="30">
     </a>
     <div class="header-user-menu">
       <div class="herder-user-name no-logged">Whether to log in now ?
@@ -345,25 +339,31 @@ function header_user_menu(){
   }
 }
 
-// 获取相邻文章缩略图
+
+/*
+ * 获取相邻文章缩略图
+ * 特色图 -> 文章图 -> 首页图
+ */
+// 上一篇
 function get_prev_thumbnail_url() { 
   $prev_post = get_previous_post(); 
   if ( has_post_thumbnail($prev_post->ID) ) { 
     $img_src = wp_get_attachment_image_src( get_post_thumbnail_id( $prev_post->ID ), 'large'); 
-    return $img_src[0]; 
+    return $img_src[0]; // 特色图
   } 
   else { 
     $content = $prev_post->post_content; 
     preg_match_all('/<img.*?(?: |\\t|\\r|\\n)?src=[\'"]?(.+?)[\'"]?(?:(?: |\\t|\\r|\\n)+.*?)?>/sim', $content, $strResult, PREG_PATTERN_ORDER); 
     $n = count($strResult[1]); 
     if($n > 0){ 
-      return $strResult[1][0];  
+      return $strResult[1][0];  // 文章图
     }else{
-      return akina_option('focus_img');
+      return akina_option('focus_img'); // 首页图
     } 
   } 
 }
 
+// 下一篇
 function get_next_thumbnail_url() { 
   $next_post = get_next_post(); 
   if ( has_post_thumbnail($next_post->ID) ) { 
@@ -385,8 +385,7 @@ function get_next_thumbnail_url() {
 
 /*
  * SEO优化
-*/
-
+ */
 // 外部链接自动加nofollow
 add_filter( 'the_content', 'l_auto_link_nofollow');
 function l_auto_link_nofollow( $content ) {
@@ -442,7 +441,7 @@ add_filter('user_trailingslashit', 'nice_trailingslashit', 10, 2);
 
 /*
  * 去除链接显示categroy
-*/
+ */
 add_action( 'load-themes.php',  'no_category_base_refresh_rules');
 add_action('created_category', 'no_category_base_refresh_rules');
 add_action('edited_category', 'no_category_base_refresh_rules');
@@ -505,9 +504,10 @@ function no_category_base_request($query_vars) {
   return $query_vars;
 }
 
+
 /**
- * Author URL
-*/
+ * 更改作者页链接为昵称显示
+ */
 // Replace the user name using the nickname, query by user ID
 add_filter( 'request', 'siren_request' );
 function siren_request( $query_vars ){
@@ -531,3 +531,63 @@ function siren_author_link( $link, $author_id, $author_nicename ){
     }
     return $link;
 }
+
+
+/*
+ * 私密评论
+ * @bigfa
+ */
+function siren_private_message_hook($comment_content , $comment){
+    $comment_ID = $comment->comment_ID;
+    $parent_ID = $comment->comment_parent;
+    $parent_email = get_comment_author_email($parent_ID);
+    $is_private = get_comment_meta($comment_ID,'_private',true);
+    $email = $comment->comment_author_email;
+    $current_commenter = wp_get_current_commenter();
+    if ( $is_private ) $comment_content = '#私密# ' . $comment_content;
+    if ( $current_commenter['comment_author_email'] == $email || $parent_email == $current_commenter['comment_author_email'] || current_user_can('delete_user') ) return $comment_content;
+    if ( $is_private ) return '该评论为私密评论';
+    return $comment_content;
+}
+add_filter('get_comment_text','siren_private_message_hook',10,2);
+
+function siren_mark_private_message($comment_id){
+    if ( $_POST['is-private'] ) {
+        update_comment_meta($comment_id,'_private','true');
+    }
+}
+add_action('comment_post', 'siren_mark_private_message');
+
+
+/*
+ * 删除后台某些版权和链接
+ * @wpdx
+ */
+add_filter('admin_title', 'wpdx_custom_admin_title', 10, 2);
+function wpdx_custom_admin_title($admin_title, $title){
+    return $title.' &lsaquo; '.get_bloginfo('name');
+}
+//去掉Wordpress LOGO
+function remove_logo($wp_toolbar) {
+    $wp_toolbar->remove_node('wp-logo');
+}
+add_action('admin_bar_menu', 'remove_logo', 999);
+
+//去掉Wordpress 底部版权
+function change_footer_admin () {return '';}  
+add_filter('admin_footer_text', 'change_footer_admin', 9999);  
+function change_footer_version() {return '';}  
+add_filter( 'update_footer', 'change_footer_version', 9999);
+
+//去掉Wordpres挂件
+function disable_dashboard_widgets() {   
+    //remove_meta_box('dashboard_recent_comments', 'dashboard', 'normal');//近期评论 
+    //remove_meta_box('dashboard_recent_drafts', 'dashboard', 'normal');//近期草稿
+    remove_meta_box('dashboard_primary', 'dashboard', 'core');//wordpress博客  
+    remove_meta_box('dashboard_secondary', 'dashboard', 'core');//wordpress其它新闻  
+    remove_meta_box('dashboard_right_now', 'dashboard', 'core');//wordpress概况  
+    //remove_meta_box('dashboard_incoming_links', 'dashboard', 'core');//wordresss链入链接  
+    //remove_meta_box('dashboard_plugins', 'dashboard', 'core');//wordpress链入插件  
+    //remove_meta_box('dashboard_quick_press', 'dashboard', 'core');//wordpress快速发布   
+}  
+add_action('admin_menu', 'disable_dashboard_widgets');

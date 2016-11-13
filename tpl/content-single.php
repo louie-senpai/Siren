@@ -32,7 +32,7 @@
 	<div class="post-tags">
 		<?php if ( has_tag() ) { echo '<i class="iconfont">&#xe602;</i> '; the_tags('', ' ', ' ');}?>
 	</div>
-    <?php get_template_part('inc/sharelike'); ?>
+    <?php get_template_part('layouts/sharelike'); ?>
 		
 	</footer><!-- .entry-footer -->
 </article><!-- #post-## -->
