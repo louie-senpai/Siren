@@ -203,18 +203,14 @@ function akina_scripts() {
 	$code_lamp = akina_option('open_prism_codelamp') ? 1 : 0;
 	if(wp_is_mobile()){$auto_height = 0;}//拦截移动端
 	wp_localize_script( 'global', 'Poi' , array(
-		"pjax" => akina_option('poi_pjax'),
-		"video" => $amv,
-		"videolive" => $video_live,
-		"focusheight" => $auto_height,
-		"codelamp" => $code_lamp
-	));
-
-	//ajax comments
-	wp_localize_script( 'global', 'ajaxcomment', array(
-        'ajax_url'   => admin_url('admin-ajax.php'),
-        'order' => get_option('comment_order'),
-        'formpostion' => 'bottom' //默认为bottom，如果你的表单在顶部则设置为top。
+		'pjax' => akina_option('poi_pjax'),
+		'video' => $amv,
+		'videolive' => $video_live,
+		'focusheight' => $auto_height,
+		'codelamp' => $code_lamp,
+		'ajax_url' => admin_url('admin-ajax.php'),
+        'order' => get_option('comment_order'), // ajax comments
+        'formpostion' => 'bottom' // ajax comments 默认为bottom，如果你的表单在顶部则设置为top。
 	));
 }
 add_action( 'wp_enqueue_scripts', 'akina_scripts' );
