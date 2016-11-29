@@ -59,10 +59,6 @@ Siren 是基于 Akina 主题修改而来的，感谢[Fuzzz](http://www.akina.pw/
 - 2016-10-29<br>
 初始版本 2.0.0
 
-## 演示地址
-
-[Acool博客](http://iacool.com/)  
-
 ## 新增功能
 Pjax(ajax)全站数据异步获取，支持大部分背景音乐插件不间断播放。<br>
 首页随机背景图 + HTML5视频功能。<br>
