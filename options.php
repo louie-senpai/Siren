@@ -400,7 +400,8 @@ function optionsframework_options() {
 			'yes' => __('开启', ''),
 			'no' => __('关闭', '')
 		));
-
+    
+	//打赏
 	$options[] = array(
 		'name' => __('支付宝打赏', 'options_framework_theme'),
 		'desc' => __('支付宝二维码', 'options_framework_theme'),
@@ -411,8 +412,21 @@ function optionsframework_options() {
 		'name' => __('微信打赏', 'options_framework_theme'),
 		'desc' => __('微信二维码', 'options_framework_theme'),
 		'id' => 'wechat_code',
-		'type' => 'upload');	
+		'type' => 'upload');
 
+	$options[] = array(
+		'name' => __('QQ打赏', 'options_framework_theme'),
+		'desc' => __('QQ钱包二维码', 'options_framework_theme'),
+		'id' => 'tenpay_code',
+		'type' => 'upload');
+		
+	$options[] = array(
+		'name' => __('PayPal', 'options_framework_theme'),
+		'desc' => __('PayPal.Me收款地址', 'options_framework_theme'),
+		'id' => 'paypal',
+		'std' => '',
+		'type' => 'text');	
+	//打赏End
 		
 	//社交选项
 	$options[] = array(
@@ -649,9 +663,9 @@ function optionsframework_options() {
 		'type' => 'checkbox');
 
 	$options[] = array(
-		'name' => __('开启多说插件支持', 'options_framework_theme'),
-		'desc' => __('如果使用多说插件，请勾选此项', 'options_framework_theme'),
-		'id' => 'general_disqus_plugin_support',
+		'name' => __('开启第三方评论插件支持', 'options_framework_theme'),
+		'desc' => __('如果使用第三方评论插件，请勾选此项', 'options_framework_theme'),
+		'id' => 'general_third_party_comments_plugin_support',
 		'std' => '0',
 		'type' => 'checkbox');
 

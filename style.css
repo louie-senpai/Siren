@@ -5790,6 +5790,14 @@ i.iconfont.down {
     content: "微信";
 }
 
+.tenpay-code:after {
+    content: "QQ钱包";
+}
+
+.paypal:after {
+    content: "PayPal";
+}
+
 @media (max-width: 860px) {
     .single-reward {
         display: none;
