@@ -142,7 +142,12 @@ color: #676767 !important}
 }
 
 .login #nav , #backtoblog {
-	display:none
+	/*display:none*/
+	color: #585858 !important;
+}
+
+.login #nav {
+	margin: 0;
 }
 
 .login .ds-login{

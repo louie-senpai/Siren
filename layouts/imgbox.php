@@ -51,7 +51,16 @@ $bg_style = akina_option('focus_height') ? 'background-position: center center;b
 		<?php } ?>	
 		<?php if (akina_option('googleplus')){ ?>
 		<li><a href="<?php echo akina_option('googleplus', ''); ?>" target="_blank" class="social-wangyiyun" title="Google+"><img src="<?php bloginfo('template_url'); ?>/images/sns/googleplus.png"/></a></li>
-		<?php } ?>			
+		<?php } ?>
+		<?php if (akina_option('jianshu')){ ?>
+		<li><a href="<?php echo akina_option('jianshu', ''); ?>" target="_blank" class="social-wangyiyun" title="简书"><img src="<?php bloginfo('template_url'); ?>/images/sns/jianshu.png"/></a></li>
+		<?php } ?>
+		<?php if (akina_option('zhihu')){ ?>
+		<li><a href="<?php echo akina_option('zhihu', ''); ?>" target="_blank" class="social-wangyiyun" title="知乎"><img src="<?php bloginfo('template_url'); ?>/images/sns/zhihu.png"/></a></li>
+		<?php } ?>	
+		<?php if (akina_option('csdn')){ ?>
+		<li><a href="<?php echo akina_option('csdn', ''); ?>" target="_blank" class="social-wangyiyun" title="CSDN"><img src="<?php bloginfo('template_url'); ?>/images/sns/csdn.png"/></a></li>
+		<?php } ?>		
 	  	</div>		 
 	</div>
 	<?php } ?>

@@ -37,7 +37,7 @@ $the_cat = get_the_category();
 					</span>
 				</div>
 				<div class="float-content">
-					<p class="post-text"><?php echo mb_strimwidth(strip_shortcodes(strip_tags(apply_filters('the_content', $post->post_content))), 0, 120," ...");?></p>
+					<?php the_excerpt(); ?>
 					<div class="post-bottom">
 						<a href="<?php the_permalink(); ?>" class="button-normal"><i class="iconfont">&#xe6a0;</i></a>
 					</div>

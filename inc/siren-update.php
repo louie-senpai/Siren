@@ -145,7 +145,7 @@ function siren_robot_comment(){
      siren_ajax_comment_err('上车请打卡。');
   }
 }
-add_action('pre_comment_on_post', 'siren_robot_comment');
+if(akina_option('norobot')) add_action('pre_comment_on_post', 'siren_robot_comment');
 // 纯英文评论拦截
 function scp_comment_post( $incoming_comment ) {
   if(!preg_match('/[一-龥]/u', $incoming_comment['comment_content'])){
@@ -397,6 +397,18 @@ function get_next_thumbnail_url() {
     } 
   } 
 }
+
+/**
+ * 文章摘要
+ */
+function changes_post_excerpt_more( $more ) {
+    return ' ...';
+}
+function changes_post_excerpt_length( $length ) {
+    return 65;
+}
+add_filter( 'excerpt_more', 'changes_post_excerpt_more' );
+add_filter( 'excerpt_length', 'changes_post_excerpt_length', 999 );
 
 
 /*

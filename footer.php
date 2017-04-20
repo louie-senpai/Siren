@@ -73,15 +73,6 @@
 		<div class="search_close"></div>
 	</form>
 	<!-- search end -->
-	<div id="loading">
-		<div id="loading-center">
-			<div class="dot"></div>
-			<div class="dot"></div>
-			<div class="dot"></div>
-			<div class="dot"></div>
-			<div class="dot"></div>
-		</div>
-	</div>
 <?php wp_footer(); ?>
 <?php if(akina_option('site_statistics')){ ?>
 <div class="site-statistics">

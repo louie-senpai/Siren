@@ -24,7 +24,7 @@
 		 <?php endif ?>
 	  	<i class="iconfont">&#xe65f;</i><?php echo poi_time_since(strtotime($post->post_date_gmt)); ?>
 	  	</div>
-		<p><?php echo mb_strimwidth(strip_shortcodes(strip_tags(apply_filters('the_content', $post->post_content))), 0, 150,"...");?></p>
+		<?php the_excerpt(); ?>
 		<footer class="entry-footer">
 		<div class="post-more">
 			<a href="<?php the_permalink(); ?>"><i class="iconfont">&#xe6a0;</i></a>

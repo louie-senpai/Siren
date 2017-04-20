@@ -302,7 +302,7 @@ function optionsframework_options() {
 
 	 $options[] = array(
 		'name' => __('视频名称', 'options_framework_theme'),
-		'desc' => __('abc.mp4 ，只需要填写视频名称 abc 即可，多个用英文逗号隔开如 abc,efg ，无需在意顺序，因为加载是随机的抽取的 ', 'options_framework_theme'),
+		'desc' => __('abc.mp4 ，只需要填写视频文件名 abc 即可，多个用英文逗号隔开如 abc,efg ，无需在意顺序，因为加载是随机的抽取的 ', 'options_framework_theme'),
 		'id' => 'amv_title',
 		'std' => '',
 		'type' => 'text');
@@ -502,6 +502,27 @@ function optionsframework_options() {
 		'std' => '',
 		'type' => 'text');
 
+	$options[] = array(
+		'name' => __('简书', 'options_framework_theme'),
+		'desc' => __('简书地址', 'options_framework_theme'),
+		'id' => 'jianshu',
+		'std' => '',
+		'type' => 'text');
+
+	$options[] = array(
+		'name' => __('CSDN', 'options_framework_theme'),
+		'desc' => __('CSND社区地址', 'options_framework_theme'),
+		'id' => 'csdn',
+		'std' => '',
+		'type' => 'text');
+
+	$options[] = array(
+		'name' => __('知乎', 'options_framework_theme'),
+		'desc' => __('知乎地址', 'options_framework_theme'),
+		'id' => 'zhihu',
+		'std' => '',
+		'type' => 'text');
+
 		
 	//聚焦图链
 	$options[] = array(
@@ -642,6 +663,13 @@ function optionsframework_options() {
 		'type' => 'checkbox');
 
 	$options[] = array(
+		'name' => __('机器人验证', 'options_framework_theme'),
+		'desc' => __('开启机器人验证', 'options_framework_theme'),
+		'id' => 'norobot',
+		'std' => '0',
+		'type' => 'checkbox');
+
+	$options[] = array(
 		'name' => __('评论UA信息', 'options_framework_theme'),
 		'desc' => __('勾选开启，用户的浏览器，操作系统信息', 'options_framework_theme'),
 		'id' => 'open_useragent',
@@ -706,6 +734,13 @@ function optionsframework_options() {
 		'name' => __('登录后自动跳转', 'options_framework_theme'),
 		'desc' => __('勾选开启，管理员跳转至后台，用户跳转至主页', 'options_framework_theme'),
 		'id' => 'login_urlskip',
+		'std' => '0',
+		'type' => 'checkbox');
+
+	$options[] = array(
+		'name' => __('注册验证', 'options_framework_theme'),
+		'desc' => __('勾选开启滑动验证', 'options_framework_theme'),
+		'id' => 'login_validate',
 		'std' => '0',
 		'type' => 'checkbox');	
 
