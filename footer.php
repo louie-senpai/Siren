@@ -12,8 +12,8 @@
 ?>
 	</div><!-- #content -->
 	<?php 
-		if(akina_option('general_disqus_plugin_support')){
-			get_template_part('layouts/duoshuo');
+		if(akina_option('general_third_party_comments_plugin_support')){
+			get_template_part('layouts/third');
 		}else{
 			comments_template('', true); 
 		}

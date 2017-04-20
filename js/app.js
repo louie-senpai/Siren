@@ -602,13 +602,6 @@ $(function() {
             NProgress.done();
             $("#loading").fadeOut(500);
             if(Poi.codelamp == 'open'){ self.Prism.highlightAll(event) }; // 解决Prism.js代码高亮
-            if($('.ds-thread').length > 0) {  // 解决多说问题
-               if (typeof DUOSHUO !== 'undefined'){
-                  DUOSHUO.EmbedThread('.ds-thread'); 
-               }else{ 
-                  $.getScript("//static.duoshuo.com/embed.js"); 
-              }
-            }       
         }).on('submit', '.search-form,.s-search', function (event) {
             event.preventDefault();
             $.pjax.submit(event, '#page', {

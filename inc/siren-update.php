@@ -779,18 +779,22 @@ function siren_get_useragent($ua){
 /*
  * 打赏
  */
- function the_reward(){
+function the_reward(){
   $alipay = akina_option('alipay_code');
   $wechat = akina_option('wechat_code');
-  if($alipay || $wechat){
+  $tenpay = akina_option('tenpay_code');
+  $paypal = akina_option('paypal');
+  if($alipay || $wechat || $tenpay || $paypal){
   $alipay =  $alipay ? '<li class="alipay-code"><img src="'.$alipay.'"></li>' : '';
   $wechat = $wechat ? '<li class="wechat-code"><img src="'.$wechat.'"></li>' : '';
+  $tenpay = $tenpay ? '<li class="tenpay-code"><img src="'.$tenpay.'"></li>' : '';
+  $paypal = $paypal ? '<li class="paypal"><a href="'.$paypal.'" target="_black" rel="external nofollow"><img src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/PP_logo_h_200x51.png" /></a></li>' : '';
   ?>
   <div class="single-reward">
     <div class="reward-open">赏
       <div class="reward-main">
         <ul class="reward-row">
-          <?php echo $alipay.$wechat; ?>
+          <?php echo $alipay.$wechat.$tenpay.$paypal; ?>
         </ul>
       </div>
     </div>

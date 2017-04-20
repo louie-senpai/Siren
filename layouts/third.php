@@ -1,13 +1,13 @@
 <?php 
 
 	/**
-	 * DISQUS COMMENTS
+	 * Third-party COMMENTS
 	 */
 
 ?>
 
 <?php if (!is_home()&&(comments_open()) ){ ?>
-	<section class="duoshuowrapper comments">
+	<section class="thirdwrapper comments">
 		<div class="commentwrap comments-hidden">
 			<div class="notification"><i class="iconfont">&#xe667;</i><?php esc_html_e('查看评论', 'akina'); ?></div>
 		</div>
