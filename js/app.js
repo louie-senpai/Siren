@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Siren application js
  * @author Louie
  * @url http://i94.me
@@ -12,34 +12,34 @@ var baguetteBox = function() {
             n && n.filter && (A = n.filter);
             var e = t.getElementsByTagName("a");
             e = [].filter.call(e, function(t) {
-                return A.test(t.href)
+                return A.test(t.href);
             });
             var o = D.length;
             D.push(e), D[o].options = n, [].forEach.call(D[o], function(t, e) {
                 m(t, "click", function(t) {
-                    t.preventDefault ? t.preventDefault() : t.returnValue = !1, i(o), a(e)
-                })
-            })
-        })
+                    t.preventDefault ? t.preventDefault() : t.returnValue = !1, i(o), a(e);
+                });
+            });
+        });
     }
     function e() {
-        return (b = v("baguetteBox-overlay")) ? (k = v("baguetteBox-slider"), w = v("previous-button"), C = v("next-button"), T = v("close-button"), void 0) : (b = y("div"), b.id = "baguetteBox-overlay", document.getElementsByTagName("body")[0].appendChild(b), k = y("div"), k.id = "baguetteBox-slider", b.appendChild(k), w = y("button"), w.id = "previous-button", w.innerHTML = H.svg ? E : "&lt;", b.appendChild(w), C = y("button"), C.id = "next-button", C.innerHTML = H.svg ? x : "&gt;", b.appendChild(C), T = y("button"), T.id = "close-button", T.innerHTML = H.svg ? B : "X", b.appendChild(T), w.className = C.className = T.className = "baguetteBox-button", n(), void 0)
+        return (b = v("baguetteBox-overlay")) ? (k = v("baguetteBox-slider"), w = v("previous-button"), C = v("next-button"), T = v("close-button"), void 0) : (b = y("div"), b.id = "baguetteBox-overlay", document.getElementsByTagName("body")[0].appendChild(b), k = y("div"), k.id = "baguetteBox-slider", b.appendChild(k), w = y("button"), w.id = "previous-button", w.innerHTML = H.svg ? E : "&lt;", b.appendChild(w), C = y("button"), C.id = "next-button", C.innerHTML = H.svg ? x : "&gt;", b.appendChild(C), T = y("button"), T.id = "close-button", T.innerHTML = H.svg ? B : "X", b.appendChild(T), w.className = C.className = T.className = "baguetteBox-button", n(), void 0);
     }
     function n() {
         m(b, "click", function(t) {
-            t.target && "IMG" !== t.target.nodeName && "FIGCAPTION" !== t.target.nodeName && r()
+            t.target && "IMG" !== t.target.nodeName && "FIGCAPTION" !== t.target.nodeName && r();
         }), m(w, "click", function(t) {
-            t.stopPropagation ? t.stopPropagation() : t.cancelBubble = !0, c()
+            t.stopPropagation ? t.stopPropagation() : t.cancelBubble = !0, c();
         }), m(C, "click", function(t) {
-            t.stopPropagation ? t.stopPropagation() : t.cancelBubble = !0, u()
+            t.stopPropagation ? t.stopPropagation() : t.cancelBubble = !0, u();
         }), m(T, "click", function(t) {
-            t.stopPropagation ? t.stopPropagation() : t.cancelBubble = !0, r()
+            t.stopPropagation ? t.stopPropagation() : t.cancelBubble = !0, r();
         }), m(b, "touchstart", function(t) {
-            N = t.changedTouches[0].pageX
+            N = t.changedTouches[0].pageX;
         }), m(b, "touchmove", function(t) {
-            S || (t.preventDefault ? t.preventDefault() : t.returnValue = !1, touch = t.touches[0] || t.changedTouches[0], touch.pageX - N > 40 ? (S = !0, c()) : touch.pageX - N < -40 && (S = !0, u()))
+            S || (t.preventDefault ? t.preventDefault() : t.returnValue = !1, touch = t.touches[0] || t.changedTouches[0], touch.pageX - N > 40 ? (S = !0, c()) : touch.pageX - N < -40 && (S = !0, u()));
         }), m(b, "touchend", function() {
-            S = !1
+            S = !1;
         }), m(document, "keydown", function(t) {
             switch (t.keyCode) {
             case 37:
@@ -49,25 +49,25 @@ var baguetteBox = function() {
                 u();
                 break;
             case 27:
-                r()
+                r();
             }
-        })
+        });
     }
     function i(t) {
         if (M !== t) {
             for (M = t, o(D[t].options); k.firstChild;) k.removeChild(k.firstChild);
             X.length = 0;
-            for (var e, n = 0; n < D[t].length; n++) e = y("div"), e.className = "full-image", e.id = "baguette-img-" + n, X.push(e), k.appendChild(X[n])
+            for (var e, n = 0; n < D[t].length; n++) e = y("div"), e.className = "full-image", e.id = "baguette-img-" + n, X.push(e), k.appendChild(X[n]);
         }
     }
     function o(t) {
         t || (t = {});
-        for (var e in P) I[e] = P[e], "undefined" != typeof t[e] && (I[e] = t[e]);
-        k.style.transition = k.style.webkitTransition = "fadeIn" === I.animation ? "opacity .4s ease" : "slideIn" === I.animation ? "" : "none", "auto" === I.buttons && ("ontouchstart" in window || 1 === D[M].length) && (I.buttons = !1), w.style.display = C.style.display = I.buttons ? "" : "none"
+        for (var e in P) I[e] = P[e], "undefined" !== typeof t[e] && (I[e] = t[e]);
+        k.style.transition = k.style.webkitTransition = "fadeIn" === I.animation ? "opacity .4s ease" : "slideIn" === I.animation ? "" : "none", "auto" === I.buttons && ("ontouchstart" in window || 1 === D[M].length) && (I.buttons = !1), w.style.display = C.style.display = I.buttons ? "" : "none";
     }
     function a(t) {
         "block" !== b.style.display && (L = t, s(L, function() {
-            p(L), h(L)
+            p(L), h(L);
         }), d(), b.style.display = "block", setTimeout(function() {
             b.className = "visible", I.afterShow && I.afterShow()
         }, 50), I.onChange && I.onChange(L, X.length))
@@ -573,6 +573,23 @@ var home = location.href,
 
 }
 
+var reloadowo = function () {
+	var OwO_demo = new OwO({
+    	logo: '表情 and Lanugage',
+    	container: document.getElementsByClassName('OwO')[0],
+    	target: document.getElementsByClassName('commentbody')[0],
+   		api: 'https://www.liaronce.win/wp-content/OwO.json ',
+    	position: 'down',
+    	width: '100%',
+    	maxHeight: '250px'
+	});
+};
+
+var loadpiwik = function() {
+	_paq.push(['setDocumentTitle', document.title]);
+    _paq.push(['trackPageView']);
+};
+
 // Executive function
 $(function() {
 
@@ -591,7 +608,7 @@ $(function() {
     if(Poi.pjax){
         $(document).pjax('a[target!=_top]', '#page', {
             fragment: '#page',
-            timeout: 8000,
+            timeout: 32000,
         }).on('pjax:send', function() {
             $('#loading').fadeIn(300);
             Siren.MNH();
@@ -599,8 +616,13 @@ $(function() {
             Siren.AH();
             Siren.PE();
             Siren.CE();
+            reloadowo();
+			    loadpiwik();
             $("#loading").fadeOut(500);
             if(Poi.codelamp == 'open'){ self.Prism.highlightAll(event) }; // 解决Prism.js代码高亮
+            if (typeof _hmt !== 'undefined'){
+                 _hmt.push(['_trackPageview', location.pathname + location.search]);
+            }  
         }).on('submit', '.search-form,.s-search', function (event) {
             event.preventDefault();
             $.pjax.submit(event, '#page', {
@@ -643,6 +665,13 @@ $(function() {
     console.log("%c Github %c","background:#24272A; color:#ffffff","","https://github.com/louie-senpai"); 
 
 });
+
+function show_date_time(){
+    window.setTimeout("show_date_time()",1e3);
+    var BirthDay=new Date("2016/08/29"),today=new Date,timeold=today.getTime()-BirthDay.getTime(),msPerDay=864e5,e_daysold=timeold/msPerDay,daysold=Math.floor(e_daysold),e_hrsold=24*(e_daysold-daysold),hrsold=Math.floor(e_hrsold),e_minsold=60*(e_hrsold-hrsold),minsold=Math.floor(60*(e_hrsold-hrsold)),seconds=Math.floor(60*(e_minsold-minsold));
+    span_dt_dt.innerHTML=daysold+"天"+hrsold+"小时"+minsold+"分"+seconds+"秒";
+    }
+show_date_time();
 
 /*
  * File skip-link-focus-fix.js.

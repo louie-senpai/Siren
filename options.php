@@ -400,8 +400,8 @@ function optionsframework_options() {
 			'yes' => __('开启', ''),
 			'no' => __('关闭', '')
 		));
-    
-	//打赏
+
+	//打赏选项
 	$options[] = array(
 		'name' => __('支付宝打赏', 'options_framework_theme'),
 		'desc' => __('支付宝二维码', 'options_framework_theme'),
@@ -413,7 +413,7 @@ function optionsframework_options() {
 		'desc' => __('微信二维码', 'options_framework_theme'),
 		'id' => 'wechat_code',
 		'type' => 'upload');
-
+		
 	$options[] = array(
 		'name' => __('QQ打赏', 'options_framework_theme'),
 		'desc' => __('QQ钱包二维码', 'options_framework_theme'),
@@ -425,8 +425,8 @@ function optionsframework_options() {
 		'desc' => __('PayPal.Me收款地址', 'options_framework_theme'),
 		'id' => 'paypal',
 		'std' => '',
-		'type' => 'text');	
-	//打赏End
+		'type' => 'text');
+
 		
 	//社交选项
 	$options[] = array(
@@ -439,7 +439,7 @@ function optionsframework_options() {
 		'id' => 'wechat',
 		'type' => 'upload');
 	
-    $options[] = array(
+        $options[] = array(
 		'name' => __('新浪微博', 'options_framework_theme'),
 		'desc' => __('新浪微博地址', 'options_framework_theme'),
 		'id' => 'sina',
@@ -513,6 +513,27 @@ function optionsframework_options() {
 		'name' => __('Google+', 'options_framework_theme'),
 		'desc' => __('G+地址', 'options_framework_theme'),
 		'id' => 'googleplus',
+		'std' => '',
+		'type' => 'text');
+
+	$options[] = array(
+		'name' => __('简书', 'options_framework_theme'),
+		'desc' => __('简书地址', 'options_framework_theme'),
+		'id' => 'jianshu',
+		'std' => '',
+		'type' => 'text');
+
+	$options[] = array(
+		'name' => __('CSDN', 'options_framework_theme'),
+		'desc' => __('CSND社区地址', 'options_framework_theme'),
+		'id' => 'csdn',
+		'std' => '',
+		'type' => 'text');
+
+	$options[] = array(
+		'name' => __('知乎', 'options_framework_theme'),
+		'desc' => __('知乎地址', 'options_framework_theme'),
+		'id' => 'zhihu',
 		'std' => '',
 		'type' => 'text');
 
@@ -656,6 +677,13 @@ function optionsframework_options() {
 		'type' => 'checkbox');
 
 	$options[] = array(
+		'name' => __('机器人验证', 'options_framework_theme'),
+		'desc' => __('开启机器人验证', 'options_framework_theme'),
+		'id' => 'norobot',
+		'std' => '0',
+		'type' => 'checkbox');
+
+	$options[] = array(
 		'name' => __('评论UA信息', 'options_framework_theme'),
 		'desc' => __('勾选开启，用户的浏览器，操作系统信息', 'options_framework_theme'),
 		'id' => 'open_useragent',
@@ -663,9 +691,9 @@ function optionsframework_options() {
 		'type' => 'checkbox');
 
 	$options[] = array(
-		'name' => __('开启第三方评论插件支持', 'options_framework_theme'),
-		'desc' => __('如果使用第三方评论插件，请勾选此项', 'options_framework_theme'),
-		'id' => 'general_third_party_comments_plugin_support',
+		'name' => __('开启多说插件支持', 'options_framework_theme'),
+		'desc' => __('如果使用多说插件，请勾选此项', 'options_framework_theme'),
+		'id' => 'general_disqus_plugin_support',
 		'std' => '0',
 		'type' => 'checkbox');
 
@@ -720,6 +748,13 @@ function optionsframework_options() {
 		'name' => __('登录后自动跳转', 'options_framework_theme'),
 		'desc' => __('勾选开启，管理员跳转至后台，用户跳转至主页', 'options_framework_theme'),
 		'id' => 'login_urlskip',
+		'std' => '0',
+		'type' => 'checkbox');
+
+	$options[] = array(
+		'name' => __('注册验证', 'options_framework_theme'),
+		'desc' => __('勾选开启滑动验证', 'options_framework_theme'),
+		'id' => 'login_validate',
 		'std' => '0',
 		'type' => 'checkbox');	
 

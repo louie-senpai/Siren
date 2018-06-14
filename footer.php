@@ -12,8 +12,8 @@
 ?>
 	</div><!-- #content -->
 	<?php 
-		if(akina_option('general_third_party_comments_plugin_support')){
-			get_template_part('layouts/third');
+		if(akina_option('general_disqus_plugin_support')){
+			get_template_part('layouts/hashover');
 		}else{
 			comments_template('', true); 
 		}
@@ -22,8 +22,8 @@
 	<footer id="colophon" class="site-footer" role="contentinfo">
 		<div class="site-info">
 			<div class="footertext">
-				<p class="foo-logo" style="background-image: url('<?php bloginfo('template_url'); ?>/images/f-logo.png');"></p>
-				<p><?php echo akina_option('footer_info', ''); ?></p>
+				<p class="foo-logo" style="background-image: url('<?php echo esc_url( get_template_directory_uri() ); ?>/images/f-logo.png');"></p>
+				<div style="line-height: 23px;"><?php echo akina_option('footer_info', ''); ?></div>
 			</div>
 			<div class="footer-device">
 			<?php 
@@ -40,9 +40,9 @@
 		</div>
 		<div class="site-branding">
 			<?php if (akina_option('akina_logo')){ ?>
-			<div class="site-title"><a href="<?php bloginfo('url');?>" ><img src="<?php echo akina_option('akina_logo'); ?>"></a></div>
+			<div class="site-title"><a href="<?php echo esc_url( home_url() );?>" ><img src="<?php echo akina_option('akina_logo'); ?>"></a></div>
 			<?php }else{ ?>
-			<h1 class="site-title"><a href="<?php bloginfo('url');?>" ><?php bloginfo('name');?></a></h1>
+			<h1 class="site-title"><a href="<?php echo esc_url( home_url() );?>" ><?php bloginfo('name');?></a></h1>
 			<?php } ?>
 		</div>
 	</div><!-- m-nav-bar -->
@@ -88,5 +88,18 @@
 <script type="text/javascript"><?php echo akina_option('site_statistics'); ?></script>
 </div>
 <?php } ?>
+<script>
+var reloadowo = function () {
+	var OwO_demo = new OwO({
+    	logo: '表情 and Lanugage',
+    	container: document.getElementsByClassName('OwO')[0],
+    	target: document.getElementsByClassName('commentbody')[0],
+   		api: 'https://www.liaronce.win/wp-content/OwO.json ',
+    	position: 'down',
+    	width: '100%',
+    	maxHeight: '250px'
+	});
+};
+</script>
 </body>
 </html>

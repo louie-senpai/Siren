@@ -16,7 +16,7 @@
 	<?php if ( has_post_thumbnail() ) { ?>
 		<a href="<?php the_permalink();?>"><?php the_post_thumbnail('large'); ?></a>
 		<?php } else {?>
-		<a href="<?php the_permalink();?>"><img src="<?php bloginfo('template_url'); ?>/images/temp.jpg" /></a>
+		<a href="<?php the_permalink();?>"><img src="<?php echo esc_url( get_template_directory_uri() ); ?>/images/temp.jpg" /></a>
 		<?php } ?>
 	</div>
 	

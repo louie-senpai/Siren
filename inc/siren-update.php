@@ -145,7 +145,7 @@ function siren_robot_comment(){
      siren_ajax_comment_err('上车请打卡。');
   }
 }
-add_action('pre_comment_on_post', 'siren_robot_comment');
+if(akina_option('norobot')) add_action('pre_comment_on_post', 'siren_robot_comment');
 // 纯英文评论拦截
 function scp_comment_post( $incoming_comment ) {
   if(!preg_match('/[一-龥]/u', $incoming_comment['comment_content'])){
@@ -242,12 +242,12 @@ function Exuser_center(){ ?>
   <?php if(current_user_can('level_10')){ ?>
   <div class="admin-login-check">
     <?php echo login_ok(); ?>
-    <?php if(akina_option('login_urlskip')){ ?><script>gopage("<?php bloginfo('url'); ?>/wp-admin/",1);</script><?php } ?>
+    <?php if(akina_option('login_urlskip')){ ?><script>gopage("<?php echo esc_url( home_url() ); ?>/wp-admin/",1);</script><?php } ?>
   </div>
   <?php }else{ ?>
   <div class="user-login-check">
     <?php echo login_ok(); ?>
-    <?php if(akina_option('login_urlskip')){ ?><script>gopage("<?php bloginfo('url'); ?>",0);</script><?php } ?>
+    <?php if(akina_option('login_urlskip')){ ?><script>gopage("<?php echo esc_url( home_url() ); ?>",0);</script><?php } ?>
   </div>
 <?php 
   }
@@ -256,18 +256,18 @@ function Exuser_center(){ ?>
 // 登录成功
 function login_ok(){ 
   global $current_user;
-  get_currentuserinfo();
+  wp_get_current_user();
 ?>
   <p class="ex-login-avatar"><a href="http://cn.gravatar.com/" title="更换头像" target="_blank" rel="nofollow"><?php echo get_avatar( $current_user->user_email, '110' ); ?></a></p>
   <p class="ex-login-username">你好，<strong><?php echo $current_user->display_name; ?></strong></p>
   <?php if($current_user->user_email){echo '<p>'.$current_user->user_email.'</p>';} ?>
   <p id="login-showtime"></p>
   <p class="ex-logout">
-    <a href="<?php bloginfo('url'); ?>" title="首页">首页</a>
+    <a href="<?php echo esc_url( home_url() ); ?>" title="首页">首页</a>
     <?php if(current_user_can('level_10')){  ?>
-    <a href="<?php bloginfo('url'); ?>/wp-admin/" title="后台" target="_top">后台</a> 
+    <a href="<?php echo esc_url( home_url() ); ?>/wp-admin/" title="后台" target="_top">后台</a> 
     <?php } ?>
-    <a href="<?php echo wp_logout_url(get_bloginfo('url')); ?>" title="登出" target="_top">登出？</a>
+    <a href="<?php echo wp_logout_url(home_url()); ?>" title="登出" target="_top">登出？</a>
   </p>
 <?php 
 }
@@ -316,7 +316,7 @@ function the_headPattern(){
  * 导航栏用户菜单
  */
 function header_user_menu(){
-  global $current_user;get_currentuserinfo(); 
+  global $current_user;wp_get_current_user(); 
   if(is_user_logged_in()){
     $ava = akina_option('focus_logo') ? akina_option('focus_logo') : get_avatar_url( $current_user->user_email );
     ?>
@@ -328,18 +328,18 @@ function header_user_menu(){
         </div>
         <div class="user-menu-option">
           <?php if (current_user_can('level_10')) { ?>
-            <a href="<?php bloginfo('url'); ?>/wp-admin/" target="_top">管理中心</a>
-            <a href="<?php bloginfo('url'); ?>/wp-admin/post-new.php" target="_top">撰写文章</a>
+            <a href="<?php echo esc_url( home_url() ); ?>/wp-admin/" target="_top">管理中心</a>
+            <a href="<?php echo esc_url( home_url() ); ?>/wp-admin/post-new.php" target="_top">撰写文章</a>
           <?php } ?>
-          <a href="<?php bloginfo('url'); ?>/wp-admin/profile.php" target="_top">个人资料</a>
-          <a href="<?php echo wp_logout_url(get_bloginfo('url')); ?>" target="_top">退出登录</a>
+          <a href="<?php echo esc_url( home_url() ); ?>/wp-admin/profile.php" target="_top">个人资料</a>
+          <a href="<?php echo wp_logout_url(home_url()); ?>" target="_top">退出登录</a>
         </div>
       </div>
     </div>
   <?php
   }else{ 
     $ava = get_template_directory_uri().'/images/none.png';
-    $login_url = akina_option('exlogin_url') ? akina_option('exlogin_url') : get_bloginfo('url').'/wp-login.php';
+    $login_url = akina_option('exlogin_url') ? akina_option('exlogin_url') : home_url().'/wp-login.php';
   ?>
   <div class="header-user-avatar">
     <a href="<?php echo $login_url; ?>">
@@ -398,6 +398,17 @@ function get_next_thumbnail_url() {
   } 
 }
 
+/**
+ * 文章摘要
+ */
+function changes_post_excerpt_more( $more ) {
+    return ' ...';
+}
+function changes_post_excerpt_length( $length ) {
+    return 65;
+}
+add_filter( 'excerpt_more', 'changes_post_excerpt_more' );
+add_filter( 'excerpt_length', 'changes_post_excerpt_length', 999 );
 
 /*
  * SEO优化
@@ -513,7 +524,7 @@ add_filter('request', 'no_category_base_request');
 function no_category_base_request($query_vars) {
   //print_r($query_vars); // For Debugging
   if (isset($query_vars['category_redirect'])) {
-    $catlink = trailingslashit(get_option('home')) . user_trailingslashit($query_vars['category_redirect'], 'category');
+    $catlink = trailingslashit(home_url()) . user_trailingslashit($query_vars['category_redirect'], 'category');
     status_header(301);
     header("Location: $catlink");
     exit();
@@ -755,7 +766,7 @@ function siren_get_os($ua){
 
 function siren_get_useragent($ua){
   if(akina_option('open_useragent')){
-    $imgurl = get_bloginfo('template_directory') . '/images/ua/';
+    $imgurl = get_template_directory_uri() . '/images/ua/';
     $browser = siren_get_browsers($ua);
     $os = siren_get_os($ua);
     return '&nbsp;&nbsp;<span class="useragent-info">( <img src="'. $imgurl.$browser[1] .'.png">&nbsp;'. $browser[0] .'&nbsp;&nbsp;<img src="'. $imgurl.$os[1] .'.png">&nbsp;'. $os[0] .' )</span>';
@@ -767,7 +778,7 @@ function siren_get_useragent($ua){
 /*
  * 打赏
  */
-function the_reward(){
+ function the_reward(){
   $alipay = akina_option('alipay_code');
   $wechat = akina_option('wechat_code');
   $tenpay = akina_option('tenpay_code');

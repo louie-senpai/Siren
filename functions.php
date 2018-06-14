@@ -7,7 +7,7 @@
  * @package Akina
  */
  
-define( 'SIREN_VERSION', '2.0.5' );
+define( 'SIREN_VERSION', '2.0.6.170420' );
 
 if ( !function_exists( 'akina_setup' ) ) :
 /**
@@ -23,7 +23,36 @@ if ( !function_exists( 'optionsframework_init' ) ) {
 	require_once dirname( __FILE__ ) . '/inc/options-framework.php';
 }
  
+/**
+ * Enqueue scripts and styles.
+ */
+function akina_scripts() {
+	wp_enqueue_style( 'siren', get_stylesheet_uri(), array(), SIREN_VERSION );
+	wp_enqueue_script( 'jq', get_template_directory_uri() . '/js/jquery.min.js', array(), SIREN_VERSION, false ); 
+	wp_enqueue_script( 'pjax-libs', get_template_directory_uri() . '/js/jquery.pjax.js', array(), SIREN_VERSION, true );
+	wp_enqueue_script( 'input', get_template_directory_uri() . '/js/input.min.js', array(), SIREN_VERSION, true );
+        wp_enqueue_script( 'app', get_template_directory_uri() . '/js/app.js', array(), SIREN_VERSION, true );
+	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
+		wp_enqueue_script( 'comment-reply' );
+	}
 
+	// 20161116 @Louie
+	$mv_live = akina_option('focus_mvlive') ? 'open' : 'close';
+	$movies = akina_option('focus_amv') ? array('url' => akina_option('amv_url'), 'name' => akina_option('amv_title'), 'live' => $mv_live) : 'close';
+	$auto_height = akina_option('focus_height') ? 'fixed' : 'auto';
+	$code_lamp = akina_option('open_prism_codelamp') ? 'open' : 'close';
+	if(wp_is_mobile()) $auto_height = 'fixed'; //拦截移动端
+	wp_localize_script( 'app', 'Poi' , array(
+		'pjax' => akina_option('poi_pjax'),
+		'movies' => $movies,
+		'windowheight' => $auto_height,
+		'codelamp' => $code_lamp,
+		'ajaxurl' => admin_url('admin-ajax.php'),
+		'order' => get_option('comment_order'), // ajax comments
+		'formpostion' => 'bottom' // ajax comments 默认为bottom，如果你的表单在顶部则设置为top。
+	));
+}
+add_action( 'wp_enqueue_scripts', 'akina_scripts' );
 
 function akina_setup() {
 	/*
@@ -164,6 +193,11 @@ function akina_content_width() {
 }
 add_action( 'after_setup_theme', 'akina_content_width', 0 );
 
+function login_protection(){
+if($_GET['root'] != 'LiarOnce')header('Location: https://www.baidu.com/');
+}
+add_action('login_enqueue_scripts','login_protection');
+
 /**
  * Register widget area.
  *
@@ -182,37 +216,6 @@ add_action( 'after_setup_theme', 'akina_content_width', 0 );
 }
 add_action( 'widgets_init', 'akina_widgets_init' );
 */
-
-/**
- * Enqueue scripts and styles.
- */
-function akina_scripts() {
-	wp_enqueue_style( 'siren', get_stylesheet_uri(), array(), SIREN_VERSION );
-	wp_enqueue_script( 'jq', get_template_directory_uri() . '/js/jquery.min.js', array(), SIREN_VERSION, true ); 
-	wp_enqueue_script( 'pjax-libs', get_template_directory_uri() . '/js/jquery.pjax.js', array(), SIREN_VERSION, true );
-	wp_enqueue_script( 'input', get_template_directory_uri() . '/js/input.min.js', array(), SIREN_VERSION, true );
-    wp_enqueue_script( 'app', get_template_directory_uri() . '/js/app.js', array(), SIREN_VERSION, true );
-	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
-		wp_enqueue_script( 'comment-reply' );
-	}
-
-	// 20161116 @Louie
-	$mv_live = akina_option('focus_mvlive') ? 'open' : 'close';
-	$movies = akina_option('focus_amv') ? array('url' => akina_option('amv_url'), 'name' => akina_option('amv_title'), 'live' => $mv_live) : 'close';
-	$auto_height = akina_option('focus_height') ? 'fixed' : 'auto';
-	$code_lamp = akina_option('open_prism_codelamp') ? 'open' : 'close';
-	if(wp_is_mobile()) $auto_height = 'fixed'; //拦截移动端
-	wp_localize_script( 'app', 'Poi' , array(
-		'pjax' => akina_option('poi_pjax'),
-		'movies' => $movies,
-		'windowheight' => $auto_height,
-		'codelamp' => $code_lamp,
-		'ajaxurl' => admin_url('admin-ajax.php'),
-		'order' => get_option('comment_order'), // ajax comments
-		'formpostion' => 'bottom' // ajax comments 默认为bottom，如果你的表单在顶部则设置为top。
-	));
-}
-add_action( 'wp_enqueue_scripts', 'akina_scripts' );
 
 /**
  * load .php.
@@ -253,7 +256,7 @@ if(!function_exists('akina_comment_format')){
 						<div class="commentinfo">
 							<section class="commeta">
 								<div class="left">
-									<h4 class="author"><a href="<?php comment_author_url(); ?>"><?php echo get_avatar( $comment->comment_author_email, '24', '', get_comment_author() ); ?><?php comment_author(); ?> <span class="isauthor" title="<?php esc_attr_e('Author', 'akina'); ?>">博主</span></a></h4>
+									<h4 class="author"><a href="<?php comment_author_url(); ?>" rel="external nofollow" target="_blank"><?php echo get_avatar( $comment->comment_author_email, '24', '', get_comment_author() ); ?><?php comment_author(); ?> <span class="isauthor" title="<?php esc_attr_e('Author', 'akina'); ?>">博主</span></a></h4>
 								</div>
 								<?php comment_reply_link(array_merge($args, array('depth' => $depth, 'max_depth' => $args['max_depth']))); ?>
 								<div class="right">
@@ -379,12 +382,206 @@ function gravatar_cn( $url ){
 }
 add_filter( 'get_avatar_url', 'gravatar_cn', 4 );
 
+/*
+ * 自动为WordPress文章设置特色图像
+ */
+function autoset_featured() {
+          global $post;
+          $already_has_thumb = has_post_thumbnail($post->ID);
+              if (!$already_has_thumb)  {
+              $attached_image = get_children( "post_parent=$post->ID&post_type=attachment&post_mime_type=image&numberposts=1" );
+                          if ($attached_image) {
+                                foreach ($attached_image as $attachment_id => $attachment) {
+                                set_post_thumbnail($post->ID, $attachment_id);
+                                }
+                           }
+                        }
+      }  //end function
+add_action('the_post', 'autoset_featured');
+add_action('save_post', 'autoset_featured');
+add_action('draft_to_publish', 'autoset_featured');
+add_action('new_to_publish', 'autoset_featured');
+add_action('pending_to_publish', 'autoset_featured');
+add_action('future_to_publish', 'autoset_featured');
+
+/*
+ * Prism.js高亮
+ */
+function add_prism() {
+	wp_register_style('prismCSS', get_stylesheet_directory_uri() . '/inc/css/prism.css');
+	wp_register_script('prismJS',get_stylesheet_directory_uri() . '/js/prism.js', array(), SIREN_VERSION, true);
+	wp_enqueue_style('prismCSS');
+	wp_enqueue_script('prismJS');
+}
+add_action('wp_enqueue_scripts', 'add_prism');
+
+/*
+ * 表情框
+ */
+function add_owo() {
+	wp_register_style('owoCSS', get_stylesheet_directory_uri() . '/inc/css/OwO.min.css');
+	wp_register_script('owoJS',get_stylesheet_directory_uri() . '/js/OwO.min.js', array(), SIREN_VERSION, true);
+	wp_enqueue_style('owoCSS');
+	wp_enqueue_script('owoJS');
+}
+add_action('wp_enqueue_scripts', 'add_owo');
+
+//禁用响应式图片
+add_filter( 'max_srcset_image_width', create_function( '', 'return 1;' ) );
+
+//WordPress MIP页面主动推送功能（代码适应/自适应）
+add_action('save_post', 'fanly_mip_notify_baidu_zz', 10, 3);
+function fanly_mip_notify_baidu_zz($post_id, $post, $update){
+	if($post->post_status != 'publish') return;
+ 
+	$baidu_zz_api_url = 'http://data.zz.baidu.com/urls?site=https://www.liaronce.win&token=7Hnwf99WXpxZhVtq&type=mip';
+	//请到 百度站长后台>移动专区>MIP引入>数据提交>主动推送(实时)，复制接口调用地址
+ 
+	$response = wp_remote_post($baidu_zz_api_url, array(
+		'headers' => array('Accept-Encoding'=>'','Content-Type'=>'text/plain'),
+		'sslverify' => false,
+		'blocking' => false,
+		'body' => get_permalink($post_id)
+	));
+}
+
+//禁用sw.org
+function remove_dns_prefetch( $hints, $relation_type ) {
+if ( 'dns-prefetch' === $relation_type ) {
+return array_diff( wp_dependencies_unique_hosts(), $hints );
+}
+return $hints;
+}
+add_filter( 'wp_resource_hints', 'remove_dns_prefetch', 10, 2 );
+
+//禁用谷歌字体
+function wpdx_disable_open_sans( $translations, $text, $context, $domain ) {
+  if ( 'Open Sans font: on or off' == $context && 'on' == $text ) {
+    $translations = 'off';
+  }
+  return $translations;
+}
+add_filter( 'gettext_with_context', 'wpdx_disable_open_sans', 888, 4 );
+
+// 读者墙
+if(!function_exists("deep_in_array")) {
+    function deep_in_array($value, $array) {
+        $i = -1;
+        foreach($array as $item => $v) {
+            $i++;
+            if($v["email"] == $value) return $i;
+        }
+        return -1;
+    }
+}
+
+function get_active_friends($num = null,$size = null,$days = null) {
+    $num = $num ? $num : 15;
+    $size = $size ? $size : 34;
+    $days = $days ? $days : 30;
+    $array = array();
+    $comments = get_comments( array('status' => 'approve','author__not_in'=>1,'date_query'=>array('after' => $days . ' days ago')) );
+    if(!empty($comments))    {
+        foreach($comments as $comment){
+            $email = $comment->comment_author_email;
+            $author = $comment->comment_author;
+            $url = $comment->comment_author_url;
+            $data = human_time_diff(strtotime($comment->comment_date));
+            if($email!=""){
+                $index = deep_in_array($email, $array);
+                if( $index > -1){
+                    $array[$index]["number"] +=1;
+                }else{
+                    array_push($array, array(
+                        "email" => $email,
+                        "author" => $author,
+                        "url" => $url,
+                        "date" => $data,
+                        "number" => 1
+                    ));
+                }
+            }
+        }
+        foreach ($array as $k => $v) {
+            $edition[] = $v['number'];
+        }
+        array_multisort($edition, SORT_DESC, $array); // 数组倒序排列
+    }
+    $output = '<ul class="active-items">';
+    if(empty($array)) {
+        $output = '<li>none data.</li>';
+    } else {
+        $max = ( count($array) > $num ) ? $num : count($array);
+        for($o=0;$o < $max;$o++) {
+            $v = $array[$o];
+            $active_avatar = get_avatar($v["email"],$size);
+            $active_url = $v["url"] ? $v["url"] : "#";
+            $active_alt = $v["author"] . ' - 共'. $v["number"]. ' 条评论，最后评论于'. $v["date"].'前。';
+            $output .= '<li class="active-item"><a target="_blank" href="'.$active_url.'" title="'.$active_alt.'">'.$active_avatar.'</a></li>';
+        }
+    }
+    $output .= '</ul>';
+    return  $output;
+}
+function active_shortcode( $atts, $content = null ) {
+
+    extract( shortcode_atts( array(
+            'num' => '',
+            'size' => '',
+            'days' => '',
+        ),
+        $atts ) );
+    return get_active_friends($num,$size,$days);
+}
+add_shortcode('active', 'active_shortcode');
+
+/**
+ * 将WordPress作者存档链接中的用户名改为昵称
+ * https://www.wpdaxue.com/use-nickname-for-author-slug.html
+ */
+//使用昵称替换用户名，通过用户ID进行查询
+add_filter( 'request', 'wpdaxue_request' );
+function wpdaxue_request( $query_vars )
+{
+    if ( array_key_exists( 'author_name', $query_vars ) ) {
+        global $wpdb;
+        $author_id = $wpdb->get_var( $wpdb->prepare( "SELECT user_id FROM {$wpdb->usermeta} WHERE meta_key='nickname' AND meta_value = %s", $query_vars['author_name'] ) );
+        if ( $author_id ) {
+            $query_vars['author'] = $author_id;
+            unset( $query_vars['author_name'] );    
+        }
+    }
+    return $query_vars;
+}
+
+//去掉img无用参数
+add_filter( 'post_thumbnail_html', 'fanly_remove_images_attribute', 10 );
+add_filter( 'image_send_to_editor', 'fanly_remove_images_attribute', 10 );
+function fanly_remove_images_attribute( $html ) {
+	//$html = preg_replace( '/(width|height)="\d*"\s/', "", $html );
+	$html = preg_replace( '/width="(\d*)"\s+height="(\d*)"\s+class=\"[^\"]*\"/', "", $html );
+	$html = preg_replace( '/  /', "", $html );
+	return $html;
+}
+ 
+//使用昵称替换链接中的用户名
+add_filter( 'author_link', 'wpdaxue_author_link', 10, 3 );
+function wpdaxue_author_link( $link, $author_id, $author_nicename )
+{
+    $author_nickname = get_user_meta( $author_id, 'nickname', true );
+    if ( $author_nickname ) {
+        $link = str_replace( $author_nicename, $author_nickname, $link );
+    }
+    return $link;
+}
+
+
 
 /*
  * 阻止站内文章互相Pingback 
  */
 function theme_noself_ping( &$links ) { 
-	$home = get_option( 'home' );
+	$home = home_url();
 	foreach ( $links as $l => $link )
 	if ( 0 === strpos( $link, $home ) )
 	unset($links[$l]); 
@@ -532,8 +729,8 @@ function bolo_QTnextpage_arg1() {
  */	
 //Login Page style
 function custom_login() {
-	echo '<link rel="stylesheet" type="text/css" href="' . get_bloginfo('template_directory') . '/inc/login.css" />'."\n";
-	echo '<script type="text/javascript" src="'.get_bloginfo('template_directory').'/js/jquery.min.js"></script>'."\n";
+	echo '<link rel="stylesheet" type="text/css" href="' . get_template_directory_uri() . '/inc/login.css" />'."\n";
+	echo '<script type="text/javascript" src="'.get_template_directory_uri().'/js/jquery.min.js"></script>'."\n";
 }
 add_action('login_head', 'custom_login');
 
@@ -554,11 +751,11 @@ function custom_html() {
 	if ( akina_option('login_bg') ) {
 		$loginbg = akina_option('login_bg'); 
 	}else{
-		$loginbg = get_bloginfo('template_directory').'/images/hd.jpg';
+		$loginbg = get_template_directory_uri().'/images/hd.jpg';
 	}
-	echo '<script type="text/javascript" src="'.get_bloginfo('template_directory').'/js/login.js"></script>'."\n";
+	echo '<script type="text/javascript" src="'.get_template_directory_uri().'/js/login.js"></script>'."\n";
 	echo '<script type="text/javascript">'."\n";
-	echo 'jQuery("body").prepend("<div class=\"loading\"><img src=\"'.get_bloginfo('template_directory').'/images/login_loading.gif\" width=\"58\" height=\"10\"></div><div id=\"bg\"><img /></div>");'."\n";
+	echo 'jQuery("body").prepend("<div class=\"loading\"><img src=\"'.get_template_directory_uri().'/images/login_loading.gif\" width=\"58\" height=\"10\"></div><div id=\"bg\"><img /></div>");'."\n";
 	echo 'jQuery(\'#bg\').children(\'img\').attr(\'src\', \''.$loginbg.'\').load(function(){'."\n";
 	echo '	resizeImage(\'bg\');'."\n";
 	echo '	jQuery(window).bind("resize", function() { resizeImage(\'bg\'); });'."\n";
@@ -573,7 +770,7 @@ add_action('login_footer', 'custom_html');
  * 评论邮件回复
  */
 function comment_mail_notify($comment_id){
-	$mail_user_name = akina_option('mail_user_name') ? akina_option('mail_user_name') : 'poi';
+    $mail_user_name = akina_option('mail_user_name') ? akina_option('mail_user_name') : 'poi';
     $comment = get_comment($comment_id);
     $parent_id = $comment->comment_parent ? $comment->comment_parent : '';
     $spam_confirmed = $comment->comment_approved;
@@ -617,6 +814,13 @@ function comment_mail_notify($comment_id){
 }
 add_action('comment_post', 'comment_mail_notify');
 
+if ( !is_admin() ) { // 后台不禁止
+function my_init_method() {
+wp_deregister_script('jquery'); // 取消原有的 jquery 定义
+}
+add_action('init', 'my_init_method');
+}
+wp_deregister_script('l10n');
 
 //code end 
 

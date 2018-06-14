@@ -14,6 +14,7 @@
 <head>
 <meta charset="<?php bloginfo( 'charset' ); ?>">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Cache-Control" content="no-transform " /> 
 <title itemprop="name"><?php global $page, $paged;wp_title( '-', true, 'right' );
 bloginfo( 'name' );$site_description = get_bloginfo( 'description', 'display' );
 if ( $site_description && ( is_home() || is_front_page() ) ) echo " - $site_description";if ( $paged >= 2 || $page >= 2 ) echo ' - ' . sprintf( __( '第 %s 页'), max( $paged, $page ) );?>
@@ -45,13 +46,11 @@ if (akina_option('akina_meta') == true) {
 <meta name="description" content="<?php echo $description; ?>" />
 <meta name="keywords" content="<?php echo $keywords; ?>" />
 <?php } ?>
-<link rel="shortcut icon" href="<?php bloginfo('template_url'); ?>/images/favicon.ico"/> 
+<link rel="shortcut icon" href="<?php echo esc_url( get_template_directory_uri() ); ?>/images/favicon.ico"/>
 <?php wp_head(); ?>
-<script type="text/javascript">
-if (!!window.ActiveXObject || "ActiveXObject" in window) { //is IE?
-  alert('请抛弃万恶的IE系列浏览器吧。');
-}
-</script>
+<!--[if lt IE 11]>
+<meta http-equiv="Refresh" Content="3; url=https://www.liaronce.win/ieupdate.html" />
+<![endif]-->
 </head>
 <body <?php body_class(); ?>>
 	<section id="main-container">
@@ -68,9 +67,9 @@ if (!!window.ActiveXObject || "ActiveXObject" in window) { //is IE?
 				<div class="site-top">
 					<div class="site-branding">
 						<?php if (akina_option('akina_logo')){ ?>
-						<div class="site-title"><a href="<?php bloginfo('url');?>" ><img src="<?php echo akina_option('akina_logo'); ?>"></a></div>
+						<div class="site-title"><a href="<?php echo esc_url( home_url() );?>" ><img src="<?php echo akina_option('akina_logo'); ?>"></a></div>
 						<?php }else{ ?>
-						<h1 class="site-title"><a href="<?php bloginfo('url');?>" ><?php bloginfo('name');?></a></h1>	
+						<h1 class="site-title"><a href="<?php echo esc_url( home_url() );?>" ><?php bloginfo('name');?></a></h1>	
 						<?php } ?><!-- logo end -->
 					</div><!-- .site-branding -->
 					<?php header_user_menu(); if(akina_option('top_search') == 'yes') { ?>

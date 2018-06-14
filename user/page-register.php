@@ -37,7 +37,7 @@ if( !empty($_POST['register_reg']) ) {
 	}
 
 	// verification
-	if(strlen($_POST['verification']) > 0 ){
+	if(akina_option('login_validate') && strlen($_POST['verification']) > 0 ){
 		$error .= '<strong>错误</strong>：请拖动滑块验证身份<br />';
 	}
 
@@ -69,6 +69,7 @@ if( !empty($_POST['register_reg']) ) {
 					<p><input type="text" name="user_email" tabindex="2" id="user_email" class="input" value="<?php if(!empty($user_email)) echo $user_email; ?>" size="25" placeholder="电子邮箱" required /></p>
 					<p><input id="user_pwd1" class="input" tabindex="3" type="password" tabindex="21" size="25" value="" name="user_pass" placeholder="密码" required /></p>
 					<p><input id="user_pwd2" class="input" tabindex="4" type="password" tabindex="21" size="25" value="" name="user_pass2" placeholder="确认密码" required /></p>
+					<?php if(akina_option('login_validate')) : ?>
 					<div id="verification-slider">
 						<div id="slider">
 							<div id="slider_bg"></div>
@@ -76,15 +77,16 @@ if( !empty($_POST['register_reg']) ) {
 						</div>
 						<input type="hidden" name="verification" value="verification" />
 					</div>
+					<?php endif; ?>
 					<input type="hidden" name="register_reg" value="ok" />
 					<?php if(!empty($error)) { echo '<p class="user-error">'.$error.'</p>'; } ?>
 					<input class="button register-button" name="submit" type="submit" value="注 册">
 				</form>
 			</div>
 		<?php }else{ 
-		$loadurl = akina_option('exlogin_url') ? akina_option('exlogin_url') : bloginfo('url');
+		$loadurl = akina_option('exlogin_url') ? akina_option('exlogin_url') : home_url();
 		?>
-		<script>window.location.href='<?php echo $loadurl; ?>';</script>
+		<script>//window.location.href='<?php echo $loadurl; ?>';</script>
 		<?php } ?>
 		<?php else : ?>
 			<div class="register-close"><p>暂未开放注册。</p></div>
@@ -192,4 +194,4 @@ get_footer();
 		return milliSeconds;
 	}
 </script>
-<script type='text/javascript' src='<?php bloginfo("template_url"); ?>/user/verification.js'></script>
+<script type='text/javascript' src='<?php echo esc_url( get_template_directory_uri() ) ?>/user/verification.js'></script>

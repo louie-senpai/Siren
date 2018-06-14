@@ -3,14 +3,11 @@
 	/**
 	 * COMMENTS TEMPLATE
 	 */
-
 	/*if('comments.php' == basename($_SERVER['SCRIPT_FILENAME']))
 		die(esc_html__('Please do not load this page directly.', 'akina'));*/
-
 	if(post_password_required()){
 		return;
 	}
-
 ?>
 
 	<?php if(comments_open()): ?>
@@ -24,7 +21,7 @@
 		</div>
 
 		<div class="comments-main">
-		 <h3 id="comments-list-title">Comments | <span class="noticom"><?php comments_number('NOTHING', '1 条评论', '% 条评论'); ?> </span></h3> 
+		 <h3 id="comments-list-title">Comments | <span class="noticom"><?php comments_number('NOTHING', '1 条评论', '% 条评论'); ?> <a href="#respond">直接下去评论</a> </span></h3> 
 		<div id="loading-comments"><span></span></div>
 			<?php if(have_comments()): ?>
 
@@ -48,7 +45,6 @@
 			<?php endif; ?>
 
 			<?php
-
 				if(comments_open()){
 					$robot_comments = '<label class="siren-checkbox-label"><input class="siren-checkbox-radio" type="checkbox" name="no-robot"><span class="siren-no-robot-checkbox siren-checkbox-radioInput"></span>滴！网络好卡</label>';
 					$private_ms = akina_option('open_private_message') ? '<label class="siren-checkbox-label"><input class="siren-checkbox-radio" type="checkbox" name="is-private"><span class="siren-is-private-checkbox siren-checkbox-radioInput"></span>私密评论</label>' : '';
@@ -59,7 +55,7 @@
 						'title_reply_to' => '<div class="graybar"><i class="fa fa-comments-o"></i>' . esc_html__('Leave a Reply to', 'akina') . ' %s' . '</div>',
 						'cancel_reply_link' => esc_html__('Cancel Reply', 'akina'),
 						'label_submit' => esc_html__('Post Comment', 'akina'),
-						'comment_field' => '<textarea placeholder="' . esc_attr__('Type in your comments', 'akina') . ' ..." name="comment" class="commentbody" id="comment" rows="5" tabindex="4"></textarea>',
+						'comment_field' => '<textarea placeholder="' . esc_attr__('Type in your comments', 'akina') . ' ..." name="comment" class="commentbody" id="comment" rows="5" tabindex="4"></textarea><p class="page-ignore"><div class="OwO"></div></p>',
 						'comment_notes_after' => '',
 						'comment_notes_before' => '',
 						'fields' => apply_filters( 'comment_form_default_fields', array(
@@ -74,7 +70,6 @@
 					);
 					comment_form($args);
 				}
-
 			?>
 
 		</div>

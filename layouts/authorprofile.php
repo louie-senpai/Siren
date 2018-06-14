@@ -15,7 +15,6 @@ if ( akina_option('author_profile') == 'yes') {
 			</div>
 		</div>
 		<hr>
-		<p><i class="iconfont">&#xe761;</i><?php echo get_the_author_meta( 'description' ) ? get_the_author_meta( 'description' ) :akina_option('admin_des', 'Carpe Diem and Do what I like'); ?></p>
-	</section>
+		<p class="page-ignore"><i class="iconfont">&#xe761;</i><?php echo akina_option('akina_meta_description'); ?></p>
 
 <?php } ?>

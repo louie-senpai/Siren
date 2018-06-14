@@ -1019,11 +1019,13 @@ a:active {
     padding: 0;
     list-style: none;
     display: inline-block;
+    border-radius: 10px;
+    background: rgba(249, 249, 249, .7);
 }
 
 .site-top ul li {
     float: left;
-    margin-left: 28px;
+    margin: 0 14px;
     position: relative;
     -webkit-transition: all 1s ease;
 }
@@ -1092,7 +1094,7 @@ a:active {
     top: 31px;
     right: -10px;
     width: 150px;
-    text-align: right;
+    text-align: center;
     z-index: 9999;
     border-radius: 5px;
     -webkit-animation: fadeInUp .3s .1s ease both;
@@ -1131,7 +1133,9 @@ a:active {
 
 .lower li ul li {
     width: 100%;
-    margin: 0;
+    margin: 0 0 0 50px;
+    border-radius: 10px;
+    background: rgba(249, 249, 249, .7);
 }
 
 .site-top .menu-item-has-children li a {
@@ -3762,7 +3766,6 @@ i.iconfont.js-toggle-search.iconsearch {
 
 .s-search input {
     font-size: 1rem;
-    background: #none;
     padding: 12px 24px 12px 64px;
     width: 100%;
     outline: none;

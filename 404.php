@@ -21,11 +21,11 @@ if ( $site_description && ( is_home() || is_front_page() ) ) echo " - $site_desc
 <body <?php body_class(); ?>>
 <section class="error-404 not-found">
 <div class="error-img">
-<img src="<?php echo get_bloginfo('template_url'); ?>/images/404.jpg">
+<img src="https://liaronce.b0.upaiyun.com/404.jpg">
 </div>
 <div class="err-button back">
 <a id="golast" href=javascript:history.go(-1);>返回上一页</a>
-<a id="gohome" href="<?php bloginfo('url');?>">返回主页</a>  
+<a id="gohome" href="<?php echo esc_url( home_url() );?>">返回主页</a>  
 </div>
 </section>
 </body>
