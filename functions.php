@@ -193,11 +193,6 @@ function akina_content_width() {
 }
 add_action( 'after_setup_theme', 'akina_content_width', 0 );
 
-function login_protection(){
-if($_GET['root'] != 'LiarOnce')header('Location: https://www.baidu.com/');
-}
-add_action('login_enqueue_scripts','login_protection');
-
 /**
  * Register widget area.
  *
@@ -428,22 +423,6 @@ add_action('wp_enqueue_scripts', 'add_owo');
 
 //禁用响应式图片
 add_filter( 'max_srcset_image_width', create_function( '', 'return 1;' ) );
-
-//WordPress MIP页面主动推送功能（代码适应/自适应）
-add_action('save_post', 'fanly_mip_notify_baidu_zz', 10, 3);
-function fanly_mip_notify_baidu_zz($post_id, $post, $update){
-	if($post->post_status != 'publish') return;
- 
-	$baidu_zz_api_url = 'http://data.zz.baidu.com/urls?site=https://www.liaronce.win&token=7Hnwf99WXpxZhVtq&type=mip';
-	//请到 百度站长后台>移动专区>MIP引入>数据提交>主动推送(实时)，复制接口调用地址
- 
-	$response = wp_remote_post($baidu_zz_api_url, array(
-		'headers' => array('Accept-Encoding'=>'','Content-Type'=>'text/plain'),
-		'sslverify' => false,
-		'blocking' => false,
-		'body' => get_permalink($post_id)
-	));
-}
 
 //禁用sw.org
 function remove_dns_prefetch( $hints, $relation_type ) {
